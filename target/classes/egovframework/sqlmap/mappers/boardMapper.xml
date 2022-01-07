@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.eyelac.board.service.impl.BoardMapper">
+	
+	<resultMap id="boardMap" type="boardVO">
+		<result property="num" column="num" />
+		<result property="regDate" column="regDate" />
+		<result property="updateDate" column="updateDate" />
+		<result property="boardName" column="boardName" />
+		<result property="boardCode" column="boardCode" />
+		<result property="depth" column="depth" />
+		<result property="parentCode" column="parentCode" />
+		<result property="boardUrl" column="boardUrl" />
+		<result property="menuOrder" column="menuOrder" />
+	</resultMap>
+	
+	<select id="getBoards" resultMap="boardMap">
+		SELECT num,
+		regDate,
+		updateDate,
+		boardName,
+		boardCode,
+		depth,
+		parentCode,
+		boardUrl,
+		menuOrder
+		FROM board
+		ORDER BY depth , menuOrder, num DESC
+	</select>
+	
+	<select id="getBoardsByDepth" parameterType="int" resultMap="boardMap">
+		SELECT num,
+		regDate,
+		updateDate,
+		boardName,
+		boardCode,
+		depth,
+		parentCode,
+		boardUrl,
+		menuOrder
+		FROM board
+		WHERE depth = #{depth}
+		ORDER BY depth , menuOrder, num DESC
+	</select>
+	
+	<select id="getBoardsChildrenCnt" resultMap="boardMap">
+		SELECT DISTINCT children.parentCode
+		FROM board AS parent
+		JOIN board AS children
+		ON children.parentCode = parent.boardCode
+	</select>
+	
+</mapper>

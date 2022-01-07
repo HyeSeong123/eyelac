@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<!-- ==========================================사용자============================================= -->
+	<!-- =========================================================================================== -->
+	<definition name="userTiles" template="/WEB-INF/jsp/user/userTemplate.jsp">
+		<put-attribute name="title" value="사용자" />
+		<put-attribute name="userHeader" value="/WEB-INF/jsp/user/userHeader.jsp" />
+		<put-attribute name="userFooter" value="/WEB-INF/jsp/user/userFooter.jsp" />
+	</definition>
+	
+	
+	<definition name="/*/*.main" extends="userTiles">
+		<put-attribute name="userSubHeader" value="" />
+		<put-attribute name="userContents" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+	</definition>
+	
+	
+	
+	<!-- jsp 경로에 따라 추가한다. -->
+	<definition name="/*.user" extends="userTiles">
+		<put-attribute name="userContents" value="/WEB-INF/jsp/{1}.jsp" />
+	</definition>
+	<definition name="/*/*.user" extends="userTiles">
+		<put-attribute name="userContents" value="/WEB-INF/jsp/{1}/{2}.jsp"/>
+	</definition>
+	<definition name="/*/*/*.user" extends="userTiles">
+		<put-attribute name="userContents" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
+	</definition>
+	
+	
+	
+	
+	<!-- 관리자 -->
+	<definition name="managetTiles" template="/WEB-INF/jsp/manager/managerTemplate.jsp">
+		<put-attribute name="title" value="관리자" />
+		<put-attribute name="managerHeader" value="/WEB-INF-/jsp/manager/managerHeader.jsp" />
+		<put-attribute name="managerHeader" value="/WEB-INF-/jsp/manager/managerFooter.jsp" />
+	</definition>
+	
+	
+	<definition name="/*.manager" extends="managerTiles">
+		<put-attribute name="managerContents" value="/WEB-INF/jsp/{1}.jsp" />
+	</definition>
+	<definition name="/*/*.manager" extends="managerTiles">
+		<put-attribute name="managerContents" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+	</definition>
+	<definition name="/*/*/*.manager" extends="managerTiles">
+		<put-attribute name="managerContents" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
+	</definition>
+	<definition name="/*/*/*/*.manager" extends="managerTiles">
+		<put-attribute name="managerContents" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp" />
+	</definition>
+	
+</tiles-definitions>

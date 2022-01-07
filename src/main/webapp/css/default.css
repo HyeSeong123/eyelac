@@ -1,0 +1,83 @@
+@charset "UTF-8";
+
+body{
+	position : relative;
+}
+ul, li, body {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+a {
+	text-decoration: none;
+}
+a:hover{
+	text-decoration : none;
+}
+ul > li{
+	width : 100%;
+	display : flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center; 
+}
+ul > li > a{
+	display : block;
+	width : 100%;
+	padding : 20px 0;
+}
+ul ul {
+	display : none;
+}
+.img_box{
+	display : block;
+	width : 100%;
+	height: 100%;
+}
+.img_box > img{
+	width : 100%;
+	height: 100%;
+	display : inline-block;
+}
+input + label{
+	cursor : pointer;
+}
+label{
+	margin-bottom : 0;
+}
+.flex{
+	display : flex;
+}
+.flex-ai-c{
+	align-items: center;
+}
+.flex-jc-sb{
+	justify-content: space-between;
+}
+.flex-jc-ar{
+	justify-content: space-around;
+}
+.flex-jc-c{
+	justify-content: center;
+}
+.flex-grow-1{
+	flex-grow: 1;	
+}
+.height-100p{
+	height : 100%;
+}
+.mobile_display_block{
+	display: none;
+}
+div#ui-datepicker-div {
+   font-family: 'twayair';
+}
+.errorMsg{
+	color : red;
+}
+.successMsg{
+	color : #33cc54;
+}
+table tr td{
+	position : relative;
+}

@@ -57,4 +57,15 @@ public class Util {
 		return result;
 	}
 	
+	public static Map<String, Object> MapResultAlert(String resultCode, String alertTitle, String alertMsg, String alertIcon) {
+		Map<String, Object> result = new HashMap<>();
+		
+		result.put("resultCode", resultCode);
+		result.put("alertTitle", alertTitle);
+		result.put("alertMsg", alertMsg);
+		result.put("alertIcon", alertIcon);
+		
+		return result;
+	}
+	
 }

@@ -81,3 +81,6 @@ div#ui-datepicker-div {
 table tr td{
 	position : relative;
 }
+.swal-text{
+	font-family: 'LotteMartHappy';
+}

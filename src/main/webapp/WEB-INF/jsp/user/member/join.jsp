@@ -70,55 +70,72 @@
 		let emailReg = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
 		
 		if( ! nameReg.test(memberName.value.trim()) ) {
-			alert('이름을 두 글자 이상 13글자 이하로 입력해주세요.');
-			memberName.focus();
+			sweetAlert('이름 입력 오류', '이름을 두 글자 이상 13글자 이하로 입력해주세요' ,"error", memberName);
 			return;
 		} else if( ! phoneNumberReg.test(memberPhoneNumber.value.trim()) ) {
-			alert('휴대전화 번호 양식을 지켜주세요.(- 제외)');
-			memberPhoneNumber.focus();
+			sweetAlert('전화번호 입력 오류', '휴대전화 번호 양식을 지켜주세요.(- 제외)', "error", memberPhoneNumber);
 			return;
 		} else if( ! idReg.test(memberId.value.trim()) ) {
-			alert('아이디를 6글자 이상 13글자 이하 영문으로 숫자가 먼저 오지 않게 지정해주세요.');
-			memberId.focus();
+			sweetAlert('아이디 입력 오류','아이디를 6글자 이상 13글자 이하 영문으로 숫자가 먼저 오지 않게 지정해주세요.', 'error', memberId);
 			return;
 		} else if( ! pwReg.test(memberPw.value.trim()) ) {
-			alert('비밀번호를 8글자 이상 18글자 이하 영문,특수문자,숫자로 지정해주세요.');
-			memberPw.focus();
+			sweetAlert('비밀번호 입력 오류','비밀번호를 8글자 이상 18글자 이하 영문,특수문자,숫자로 지정해주세요.', 'error', memberPw);
 			return;
 		} else if ( memberPw.value != memberPwConfirm.value ){
-			alert('비밀번호와 비밀번호확인이 일치하지 않습니다');
-			memberPwConfirm.focus();
+			sweetAlert('비밀번호 불일치','비밀번호와 비밀번호확인이 일치하지 않습니다', 'error', memberPwConfirm);
 		} else if( ! emailReg.test(memberEmail.value.trim()) ){
-			alert('이메일을 양식에 맞춰 입력해주세요.');
-			memberEmail.focus();
+			sweetAlert('이메일 입력 오류','이메일을 양식에 맞춰 입력해주세요.', 'error', memberEmail);
 			return;
 		} else if( memberBirth.value.length < 1 || memberBirth.value == null) {
-			alert('생일을 입력해주세요');
-			memberBirth.focus();
+			sweetAlert('생년월일 미입력','생일을 입력해주세요', 'error', memberBirth);
 			return;
 		} else if ( memberPostcode.value.length < 1 || memberPostcode.value == null){
-			alert('우편번호를 입력해주세요');
-			document.getElementById('btn_postSearch').click();
+			swal({
+				title : "주소 미입력",
+				text : "우편번호를 입력해주세요",
+				icon : "error",
+			}).then(function(){
+				document.getElementById('btn_postSearch').click();	
+			})
 			return;
 		} else if ( memberAddress.value.length < 1 || memberAddress.value == null){
 			alert('주소를 입력해주세요');
 			document.getElementById('btn_postSearch').click();
 			return;
 		} else if ( isGenderCheck == false ){
-			alert('성별을 체크해주세요.');
+			swal('성별 체크', '성별을 체크해주세요.', 'error');
 			return;
 		}
 		
 		if ( dup_check == false ){
-			alert('아이디 중복체크를 해주세요');
+			swal("중복체크 에러", "아이디 중복 체크를 해주세요", "error");
 			return;
 		}
 		nextStep = true;
 		
 		if(nextStep){
-			frm.method = "POST";
-			frm.action="/user/member/doJoin.do";	
-			frm.submit();
+			
+			$.ajax({
+				type : "POST",
+				data : $('#join_form').serialize() ,
+				url : "/user/member/doJoin.do?",
+				dataType : "json",
+				success : function (resultVal){
+					let result = resultVal.result;
+					
+					console.log(result);
+					
+					sweetAlert('')
+					
+					if ( result.resultCode.includes("F-") ){
+						
+					} else if ( result.resultCode.includes("S-") ){
+						
+					}
+					
+				}
+			});
+			
 		}
 	}
 	
@@ -180,7 +197,7 @@
 					<tr>
 						<th><span>휴대폰<div class="mobile_display_block"></div>번호</span></th>
 						<td><input type="tel" name="memberPhoneNumber" id="memberPhoneNumber"></td>
-						<td><input type="checkbox" name="SMSAgree" id="SMS_agree" <c:if test="${SMS_agree eq 'on'}">checked</c:if> value="Y"> <label for="SMS_agree">SMS 알림 문자 수신동의</label></td>
+						<td><input type="checkbox" name="SMSAgree" id="SMS_agree" <c:if test="${SMSAgree eq 'on'}">checked</c:if> value="Y"> <label for="SMS_agree">SMS 알림 문자 수신동의</label></td>
 					</tr>
 					<tr>
 						<th><span>아이디</span></th>
@@ -210,7 +227,7 @@
 					<tr>
 						<th><span>이메일</span></th>
 						<td><input type="email" name="memberEmail" id="memberEmail"></td>
-						<td><input type="checkbox" name="emailAgree" id="email_agree" <c:if test="${email_agree eq 'on'}">checked</c:if> value="Y"> <label for="email_agree">메일 수신동의</label></td>
+						<td><input type="checkbox" name="emailAgree" id="email_agree" <c:if test="${emailAgree eq 'on'}">checked</c:if> value="Y"> <label for="email_agree">메일 수신동의</label></td>
 					</tr>
 					<tr>
 						<th><span>생년월일</span></th>
@@ -248,7 +265,7 @@
 			
 			<div class="buttonBox">
 				<div class="btn_join"><button>회원가입</button></div>
-				<div class="btn_return"><button type="button" onclick="movePage('/member/join_policy.do')">취소</button></div>
+				<div class="btn_return"><button type="button" onclick="movePage('/user/member/join_policy.do')">취소</button></div>
 			</div>
 		</form>
 	</div>

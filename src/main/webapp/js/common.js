@@ -146,10 +146,18 @@ $.datepicker.setDefaults({
 	changeMonth : true,
 	changeYear : true,
 	yearSuffix : '년',
-	yearRange : '1950:2021',
-	minDate : "-70Y"
+	yearRange : 'c-70:c+1',
 });
 
 $( function() {
 	$( "#datepicker" ).datepicker();
 });
+function sweetAlert(title, text, icon, inputName){
+	swal({
+		title : title,
+		text : text,
+		icon : icon
+	}).then(function(){
+		inputName.focus();
+	})
+}

@@ -41,6 +41,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 		
 		registry.addInterceptor(needToLoginIntercepter)
 		.addPathPatterns("/**")
+		.excludePathPatterns("/")
 		.excludePathPatterns("/user/index.do")
 		.excludePathPatterns("/user/member/join_policy.do")
 		.excludePathPatterns("/user/member/join_policyCheck.do")

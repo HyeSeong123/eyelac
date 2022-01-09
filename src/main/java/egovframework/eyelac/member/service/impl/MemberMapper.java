@@ -32,4 +32,6 @@ public interface MemberMapper {
 	Map<String, Object> memberIdDuplicateResult(String memberId);
 
 	Map<String, Object> getLoginMsg(Map<String, Object> param);
+
+	MemberVO getMemberByMemberNameAndEmailAndPhNum(Map<String, Object> param);
 }

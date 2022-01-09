@@ -26,7 +26,7 @@
 			
 			var xhr = new XMLHttpRequest();
 			
-			xhr.open('POST', '/member/doFindId.do?ajax=true',true);
+			xhr.open('POST', '/user/member/doFindId.do?ajax=true',true);
 			
 			xhr.responseType = 'json';
 			
@@ -94,11 +94,11 @@
 				
 				<section class="buttonBox">
 					<div class="">
-						<button onclick="fn_pageMove('/member/login.do?afterLoginURI=${param.afterLoginURI}'); return false;">로그인</button>
+						<button onclick="fn_pageMove('/user/member/login.do?afterLoginURI=${param.afterLoginURI}'); return false;">로그인</button>
 					</div>
 					
 					<div class="">
-						<button onclick="movePage('/member/memberFindPw.do'); return false;">패스워드 찾기</button>
+						<button onclick="movePage('/user/member/memberFindPw.do'); return false;">패스워드 찾기</button>
 					</div>
 				</section>
 			</form>

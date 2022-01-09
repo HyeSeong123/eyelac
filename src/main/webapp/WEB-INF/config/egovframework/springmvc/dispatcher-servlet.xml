@@ -38,7 +38,6 @@
             <list>
                 <ref bean="beforeActionIntercepter" />
                 <ref bean="needToLoginIntercepter" />
-                <ref bean="needToLogoutIntercepter" />
             </list>
         </property>
     </bean>
@@ -63,7 +62,6 @@
 	
 	<bean id="beforeActionIntercepter" class="egovframework.eyelac.interceptor.BeforeActionIntercepter"></bean>
 	<bean id="needToLoginIntercepter" class="egovframework.eyelac.interceptor.NeedToLoginIntercepter"></bean>
-	<bean id="needToLogoutIntercepter" class="egovframework.eyelac.interceptor.NeedToLogoutIntercepter"></bean>
 	
 	<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"> 
 		<property name="contentType" value="text/plain;charset=UTF-8"/> 

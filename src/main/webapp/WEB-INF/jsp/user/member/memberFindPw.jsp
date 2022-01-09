@@ -36,7 +36,7 @@
 			
 			var xhr = new XMLHttpRequest();
 			
-			xhr.open('POST', '/member/doFindPw.do?ajax=true',true);
+			xhr.open('POST', '/user/member/doFindPw.do?ajax=true',true);
 			
 			xhr.responseType = 'json';
 			
@@ -91,6 +91,11 @@
 							<span>이메일</span>
 							<input class="" required type="email" name="memberEmail" id="memberEmail" placeholder="이메일">
 						</div>
+						
+						<div class="certification_input">
+							<span>인증번호</span>
+							<input class="" required type="text" name="certificationInput" id="certificationInput" placeholder="인증번호">
+						</div>
 					</div>
 					
 					<div class="login_btn">
@@ -100,11 +105,11 @@
 				
 				<section class="buttonBox">
 					<div class="">
-						<button onclick="fn_pageMove('/member/login.do?afterLoginURI=${param.afterLoginURI}'); return false;">로그인</button>
+						<button onclick="fn_pageMove('/user/member/login.do?afterLoginURI=${param.afterLoginURI}'); return false;">로그인</button>
 					</div>
 					
 					<div class="">
-						<button onclick="movePage('/member/memberFindPw.do'); return false;">아이디 찾기</button>
+						<button onclick="movePage('/user/member/memberFindId.do'); return false;">아이디 찾기</button>
 					</div>
 				</section>
 			</form>

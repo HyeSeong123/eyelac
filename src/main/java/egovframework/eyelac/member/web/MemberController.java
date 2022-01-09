@@ -1,5 +1,6 @@
 package egovframework.eyelac.member.web;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -69,7 +70,6 @@ public class MemberController {
 	
 	@RequestMapping("/user/member/join.do")
     public ModelAndView showJoin(HttpServletRequest req,  ModelAndView mav, @RequestParam Map<String, Object> param) throws Exception {
-		String afterLoginURI = (String) param.get("requestURI");
 		
 		String marketing = req.getParameter("marketing");
 		
@@ -100,7 +100,9 @@ public class MemberController {
 		return mav; 
 	}
 	@RequestMapping("/user/member/doJoin.do")
-    public String doJoin(HttpServletRequest req, @RequestParam Map<String,Object> param) throws Exception {
+    public ModelAndView doJoin(HttpServletRequest req, @RequestParam Map<String,Object> param) throws Exception {
+		
+		ModelAndView mav = new ModelAndView();
 		
 		String smsAgree = (String) param.get("SMSAgree");
 		String emailAgree = (String) param.get("emailAgree");
@@ -115,19 +117,28 @@ public class MemberController {
 			param.put("emailAgree", emailAgree);
 		}
 		
-		String msg = memberService.checkJoinMember(param);
+		Map<String, Object> result = new HashMap<>();
+		
+		result = memberService.checkJoinMember(param);
+		
+		String msg = (String) result.get("resultCode");
 		
 		if( msg.contains("S-1") == false ) {
-			return Util.msgAndBack(req, msg);
+			
+			mav.setView(jsonView);
+			mav.addObject("result", result);
+			
+			return mav;
 		}
 		
 		memberService.doJoin(param);
 		
-		msg = msg.replace("S-1, ", "");
+		mav.setView(jsonView);
+		mav.addObject("result", result);
 		
-		String redirectUrl = "/user/member/login.user";
+		String redirectUrl = "/user/member/login.do";
 		
-		return Util.msgAndReplace(req, msg, redirectUrl);
+		return mav;
     }
 	
 	@RequestMapping("/user/member/login.do")
@@ -146,22 +157,27 @@ public class MemberController {
         
 		session.removeAttribute("loginedMember");
 		
-		redirectURI =  Util.ifNull(redirectURI, "/index.user");
+		redirectURI =  Util.ifNull(redirectURI, "/user/index.do");
 		
         return Util.msgAndReplace(req, "로그아웃 되었습니다.", redirectURI);
     }
 	
 	@RequestMapping("/user/member/doLogin.do")
-    public String doLogin(HttpServletRequest req, HttpSession session, @RequestParam Map<String,Object> param) throws Exception {
+    public ModelAndView doLogin(HttpServletRequest req, HttpSession session, @RequestParam Map<String,Object> param) throws Exception {
     	
+		ModelAndView mav = new ModelAndView();
+		
 		Map<String, Object> result = memberService.getLoginMsg(param); 
 		
-		String msg = (String) result.get("msg"); 
+		String msg = (String) result.get("resultCode"); 
 		
 		MemberVO member = (MemberVO) result.get("member");
 		
 		if( ! "통과".equals(msg) ) {
-			return Util.msgAndBack(req, msg);
+			mav.addObject("result", result);
+			mav.setView(jsonView);
+			
+			return mav;
 		}
 		
         msg = String.format("%s님의 로그인을 환영합니다.", member.getMemberName() );
@@ -176,12 +192,14 @@ public class MemberController {
         	afterLoginURI = "/user/index.do";
         }
         
-        session.setAttribute("loginedMember", member);
+        result.put("afterLoginURI", afterLoginURI);
         
-        logger.debug("msg=" + msg);
-		logger.debug("afterLoginURI=" + afterLoginURI);
+		mav.setView(jsonView);
 		
-        return Util.msgAndReplace(req, msg, afterLoginURI);
+		session.setAttribute("loginedMember", member);
+		mav.addObject("result", result);
+		
+		return mav;
     }
 	
 	@RequestMapping("/user/member/memberFindId.do")

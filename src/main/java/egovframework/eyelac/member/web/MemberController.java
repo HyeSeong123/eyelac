@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -42,30 +43,19 @@ public class MemberController {
     }
 	
 	@RequestMapping("/user/member/join_policyCheck.do")
-    public String checkJoinPolicy(HttpServletRequest req, @RequestParam Map<String, Object> param) throws Exception {
-		logger.debug("param= " + param);
+    public ModelAndView checkJoinPolicy(HttpServletRequest req, @RequestParam Map<String, Object> param) throws Exception {
 		
-		String policyUse = (String) param.get("policyUse");
-		String privacyPolicy = (String) param.get("privacyPolicy");
-		String marketing = (String) param.get("marketPolicy");
+		ModelAndView mav = new ModelAndView();
 		
-		if( policyUse == null || policyUse.trim().equals("on") == false ) {
-			return Util.msgAndReplace(req, "이용약관에 동의 해주셔야 회원가입이 가능합니다", "/user/member/join_policy.user");
-		}
+		Map<String, Object> result = new HashMap<>();
 		
-		if( privacyPolicy == null || privacyPolicy.trim().equals("on") == false ) {
-			return Util.msgAndReplace(req, "개인정보 처리방침에 동의 해주셔야 회원가입이 가능합니다", "/user/member/join_policy.user");
-		}
+		result = memberService.checkJoinPolicy(param);
 		
-		String url = "/user/member/join.do";
+		mav.addObject("result", result);
 		
-		if( marketing != null ) {
-			url= url + "?marketing=" + marketing;
-		}
+		mav.setView(jsonView);
 		
-		logger.debug("url= " + url);
-		
-		return Util.replace(req, url);
+		return mav;
     }
 	
 	@RequestMapping("/user/member/join.do")
@@ -123,6 +113,8 @@ public class MemberController {
 		
 		String msg = (String) result.get("resultCode");
 		
+		logger.debug("msg=" + msg);
+		
 		if( msg.contains("S-1") == false ) {
 			
 			mav.setView(jsonView);
@@ -132,11 +124,12 @@ public class MemberController {
 		}
 		
 		memberService.doJoin(param);
+		String redirectUrl = "/user/member/login.do";
 		
 		mav.setView(jsonView);
-		mav.addObject("result", result);
 		
-		String redirectUrl = "/user/member/login.do";
+		mav.addObject("redirectURI" , redirectUrl);
+		mav.addObject("result", result);
 		
 		return mav;
     }
@@ -163,6 +156,7 @@ public class MemberController {
     }
 	
 	@RequestMapping("/user/member/doLogin.do")
+	@ResponseBody
     public ModelAndView doLogin(HttpServletRequest req, HttpSession session, @RequestParam Map<String,Object> param) throws Exception {
     	
 		ModelAndView mav = new ModelAndView();
@@ -171,33 +165,32 @@ public class MemberController {
 		
 		String msg = (String) result.get("resultCode"); 
 		
-		MemberVO member = (MemberVO) result.get("member");
-		
-		if( ! "통과".equals(msg) ) {
+		if( ! msg.contains("S-") ) {
 			mav.addObject("result", result);
 			mav.setView(jsonView);
 			
 			return mav;
 		}
 		
-        msg = String.format("%s님의 로그인을 환영합니다.", member.getMemberName() );
-        
+		MemberVO member = memberService.getMemberByMemberId( (String) param.get("memberId") );
+		
         String afterLoginURI = (String) param.get("afterLoginURI");
-        
-        if(afterLoginURI.contains("member")) {
-        	afterLoginURI = null;
-        }
         
         if(afterLoginURI == null || afterLoginURI == "") {
         	afterLoginURI = "/user/index.do";
         }
         
+        if(afterLoginURI.contains("member")) {
+        	afterLoginURI = null;
+        }
+        
         result.put("afterLoginURI", afterLoginURI);
         
-		mav.setView(jsonView);
+		mav.addObject("result", result);
 		
 		session.setAttribute("loginedMember", member);
-		mav.addObject("result", result);
+		
+		mav.setView(jsonView);
 		
 		return mav;
     }
@@ -226,20 +219,14 @@ public class MemberController {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		MemberVO member = memberService.getMemberByMemberNameAndEmail(param);
+		Map<String, Object> result = new HashMap<>();
 		
-		if(member == null) {
-			mav.addObject("resultCode", "F-1 입력하신 정보와 일치하는 아이디가 없습니다.");
-			
-			mav.setView(jsonView);
-			
-			return mav;
-		}
-		
-		String memberId = (String) member.getMemberId();
-		mav.addObject("resultCode" , "S-1 회원님의 아이디는 " + memberId + " 입니다.");
+		result = memberService.doFindId(param);
 		
 		mav.setView(jsonView);
+		
+		mav.addObject("result", result);
+		
 		return mav;
 	}
 	
@@ -248,11 +235,11 @@ public class MemberController {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		MemberVO member = memberService.getMemberByIdAndEmailAndBirth(param);
+		Map<String, Object> result = memberService.doFindPw(param);
 		
-		if(member == null) {
-			mav.addObject("resultCode", "F-1 입력하신 정보와 일치하는 계정이 없습니다.");
-		}
+		logger.debug("result= " + result);
+		
+		mav.addObject("result", result);
 		
 		mav.setView(jsonView);
 		return mav;

@@ -14,21 +14,39 @@
 		}
 		
 		if ( $('#policyUse').is(":checked") == false ){
-			alert('이용약관에 동의 해주셔야 회원가입이 가능합니다.');
-			$('#policyUse').focus();
+			sweetAlert('이용약관 미동의','이용약관에 동의 해주셔야 회원가입이 가능합니다.', 'error', policyUse);
 			return;
 		}
 		
 		else if ( $('#privacyPolicy').is(":checked") == false ){
-			alert('개인정보 처리방침에 동의 해주셔야 회원가입이 가능합니다.');
-			$('#privacyPolicy').focus();
+			sweetAlert('개인정보 처리방침 미동의','개인정보 처리방침에 동의 해주셔야 회원가입이 가능합니다.', 'error', privacyPolicy);
 			return;
 		}
 		
 		nextStep = true;
 		
 		if(nextStep){
-			$('#join_policy_checkBox').submit();	
+			$.ajax({
+				type : "POST",
+				data : $('#join_policy_checkBox').serialize() ,
+				url : "/user/member/join_policyCheck.do?",
+				dataType : "json",
+				success : function (resultVal){
+					let result = resultVal.result;
+					if ( result.resultCode.includes("F-") ){
+						swal(result.alertTitle,result.alertMsg, result.alertIcon);
+						nextStep = false;
+					} else if ( result.resultCode == "S-1" ){
+						swal(result.alertTitle,result.alertMsg, result.alertIcon)
+						.then(function(){
+							location.replace(result.redirectURI);	
+						})
+					} else {
+						location.replace(result.redirectURI);
+					}
+					
+				}
+			});
 		}
 	}
 </script>

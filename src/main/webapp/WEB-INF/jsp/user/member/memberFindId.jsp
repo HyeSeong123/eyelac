@@ -11,10 +11,10 @@
 		let frm = document.getElementById('findIdForm');
 		
 		if(frm.memberName.value.length < 1){
-			alert('아이디를 입력해주세요.');
+			sweetAlert('아이디 미입력','아이디를 입력해주세요.','error',frm.memberName);
 			return;
 		} else if(frm.memberEmail.value.length < 1){
-			alert('이메일을 입력해주세요.');
+			sweetAlert('이메일 미입력','이메일을 입력해주세요.','error',frm.memberEmail);
 			return;
 		}
 		
@@ -36,19 +36,21 @@
 			
 			xhr.onload = () => {
 				if (xhr.status == 200){
-					let result = xhr.response;
+					let resultVal = xhr.response;
 					let idOutput = document.querySelector('.id_output');
-					
+					let result = resultVal.result;
 					let resultLength = result.resultCode.length;
+					
+					console.log("result= " + result);
 					
 					if ( result.resultCode.includes("F-") ){
 						idOutput.innerHTML = '';
-						idOutput.innerHTML = result.resultCode.substr(4,resultLength-4);
+						idOutput.innerHTML = result.resultMsg;
 						idOutput.classList.remove('successMsg');
 						idOutput.classList.add('active', 'errorMsg');
 					} else if ( result.resultCode.includes("S-") ){
 						idOutput.innerHTML = '';
-						idOutput.innerHTML = result.resultCode.substr(4,resultLength-4);
+						idOutput.innerHTML = result.resultMsg;
 						idOutput.classList.remove('errorMsg');
 						idOutput.classList.add('active', 'successMsg');
 					}
@@ -78,12 +80,12 @@
 					<div class="box_input_input">
 						<div class="name_input">
 							<span>성명</span>
-							<input required type="text" name="memberName" id="memberName" placeholder="성명">
+							<input type="text" name="memberName" id="memberName" placeholder="성명">
 						</div>
 						
 						<div class="email_input">
 							<span>이메일</span>
-							<input class="" required type="email" name="memberEmail" id="memberEmail" placeholder="이메일">
+							<input class="" type="email" name="memberEmail" id="memberEmail" placeholder="이메일">
 						</div>
 					</div>
 					

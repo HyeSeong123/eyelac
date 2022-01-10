@@ -29,6 +29,9 @@
 		memberPw,
 		memberNickname,
 		memberEmail,
+		memberPostcode,
+		memberAddress,
+		memberGender,
 		memberPhNum,
 		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
 		memberLevel
@@ -46,6 +49,9 @@
 		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
 		memberNickname,
 		memberEmail,
+		memberPostcode,
+		memberAddress,
+		memberGender,
 		memberPhNum,
 		memberLevel
 		FROM `member`
@@ -62,6 +68,9 @@
 		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
 		memberNickname,
 		memberEmail,
+		memberPostcode,
+		memberAddress,
+		memberGender,
 		memberPhNum,
 		memberLevel
 		FROM `member`
@@ -78,6 +87,9 @@
 		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
 		memberNickname,
 		memberEmail,
+		memberPostcode,
+		memberAddress,
+		memberGender,
 		memberPhNum,
 		memberLevel
 		FROM `member`
@@ -95,6 +107,9 @@
 		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
 		memberNickname,
 		memberEmail,
+		memberPostcode,
+		memberAddress,
+		memberGender,
 		memberPhNum,
 		memberLevel
 		FROM `member`
@@ -113,6 +128,9 @@
 		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
 		memberNickname,
 		memberEmail,
+		memberPostcode,
+		memberAddress,
+		memberGender,
 		memberPhNum,
 		memberLevel
 		FROM `member`
@@ -131,6 +149,9 @@
 		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
 		memberNickname,
 		memberEmail,
+		memberPostcode,
+		memberAddress,
+		memberGender,
 		memberPhNum,
 		memberLevel
 		FROM `member`
@@ -176,6 +197,9 @@
 		memberBirth,
 		memberNickname,
 		memberEmail,
+		memberPostcode,
+		memberAddress,
+		memberGender,
 		memberPhNum,
 		memberLevel
 		FROM `member`
@@ -192,6 +216,9 @@
 		memberBirth,
 		memberNickname,
 		memberEmail,
+		memberPostcode,
+		memberAddress,
+		memberGender,
 		memberPhNum,
 		memberLevel
 		FROM `member`

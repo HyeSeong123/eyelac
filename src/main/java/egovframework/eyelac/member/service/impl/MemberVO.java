@@ -1,25 +1,28 @@
 package egovframework.eyelac.member.service.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class MemberVO {
 	private int id;
 	private String regDate;
 	private String updateDate;
 	private String memberName;
 	private String memberId;
+	@JsonIgnore
 	private String memberPw;
 	private String memberBirth;
+	@JsonIgnore
 	private String memberPostcode;
+	@JsonIgnore
 	private String memberAddress;
 	private String memberNickname;
 	private String memberEmail;
+	private String memberGender;
+	@JsonIgnore
 	private String memberPhNum;
 	private String memberLevel;
 	private String mailAgree;
 	private String emailAgree;
-	
-	
-	
-	
 	public int getId() {
 		return id;
 	}
@@ -85,6 +88,12 @@ public class MemberVO {
 	}
 	public void setMemberEmail(String memberEmail) {
 		this.memberEmail = memberEmail;
+	}
+	public String getMemberGender() {
+		return memberGender;
+	}
+	public void setMemberGender(String memberGender) {
+		this.memberGender = memberGender;
 	}
 	public String getMemberPhNum() {
 		return memberPhNum;

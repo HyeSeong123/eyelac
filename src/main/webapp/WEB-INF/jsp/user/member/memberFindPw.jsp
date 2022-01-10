@@ -17,13 +17,13 @@
 		let frm = document.getElementById('findPwForm');
 		
 		if(frm.memberId.value.length < 1){
-			alert('아이디를 입력해주세요.');
+			sweetAlert('아이디 미입력','아이디를 입력해주세요.','error',frm.memberId);
 			return;
 		} else if (frm.memberBirth.value.length < 1){
-			alert('생년월일을 입력해주세요');
+			sweetAlert('생년월일 미입력','생년월일을 입력해주세요.','error',frm.memberBirth);
 			return;
 		} else if(frm.memberEmail.value.length < 1){
-			alert('이메일을 입력해주세요.');
+			sweetAlert('이메일을 미입력','이메일을 입력해주세요.','error',frm.memberEmail);
 			return;
 		}
 		
@@ -36,24 +36,23 @@
 			
 			var xhr = new XMLHttpRequest();
 			
-			xhr.open('POST', '/user/member/doFindPw.do?ajax=true',true);
+			xhr.open('POST', '/user/member/doFindPw.do?ajax=true&memberId=' + memberId + "&memberBirth=" + memberBirth + "&memberEmail=" +memberEmail ,true);
 			
 			xhr.responseType = 'json';
 			
 			xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 			
-			xhr.send("memberId= " + memberId + "&memberBirth=" + memberBirth + "&memberEmail=" +memberEmail);
+			xhr.send();
 			
 			xhr.onload = () => {
 				if (xhr.status == 200){
-					let result = xhr.response;
-					let resultLength = result.resultCode.length;
+					let resultVal = xhr.response;
+					let result = resultVal.result;
 					
 					if ( result.resultCode.includes("F-") ){
-						alert( result.resultCode.substr(4,resultLength-4) );
-						document.getElementById('memberId').focus();
+						sweetAlert(result.alertTitle, result.alertMsg, result.alertIcon, frm.memberId);
 					} else if ( result.resultCode.includes("S-") ){
-						
+						sweetAlert(result.alertTitle, result.alertMsg, result.alertIcon, frm.certificationInput);
 					}
 					
 				} else{
@@ -79,22 +78,17 @@
 					<div class="box_input_input">
 						<div class="name_input">
 							<span>아이디</span>
-							<input required type="text" name="memberId" id="memberId" placeholder="아이디">
+							<input type="text" name="memberId" id="memberId" placeholder="아이디">
 						</div>
 						
 						<div class="birth_input">
 							<span>생년월일</span>
-							<input autocomplete="off" class="" id="datepicker" required type="text" name="memberBirth" placeholder="생년월일">
+							<input autocomplete="off" class="" id="datepicker" type="text" name="memberBirth" placeholder="생년월일">
 						</div>
 						
 						<div class="email_input">
 							<span>이메일</span>
-							<input class="" required type="email" name="memberEmail" id="memberEmail" placeholder="이메일">
-						</div>
-						
-						<div class="certification_input">
-							<span>인증번호</span>
-							<input class="" required type="text" name="certificationInput" id="certificationInput" placeholder="인증번호">
+							<input class="" type="email" name="memberEmail" id="memberEmail" placeholder="이메일">
 						</div>
 					</div>
 					
@@ -102,6 +96,13 @@
 						<button type="submit" value="Submit">찾기</button>
 					</div>
 				</div>
+				
+				<section class="box_input">
+					<div class="certification_input box_input_input">
+						<span>인증번호</span>
+						<input class="" type="text" name="certificationInput" id="certificationInput" placeholder="인증번호">
+					</div>
+				</section>
 				
 				<section class="buttonBox">
 					<div class="">

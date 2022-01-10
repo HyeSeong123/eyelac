@@ -123,14 +123,14 @@
 				success : function (resultVal){
 					let result = resultVal.result;
 					
-					console.log(result);
-					
-					sweetAlert('')
-					
 					if ( result.resultCode.includes("F-") ){
-						
+						swal(result.alertTitle,result.alertMsg, result.alertIcon);
+						nextStep = false;
 					} else if ( result.resultCode.includes("S-") ){
-						
+						swal(result.alertTitle,result.alertMsg, result.alertIcon)
+						.then(function(){
+							location.replace(resultVal.redirectURI);	
+						})
 					}
 					
 				}

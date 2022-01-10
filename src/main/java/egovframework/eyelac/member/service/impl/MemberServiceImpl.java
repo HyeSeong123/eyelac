@@ -51,7 +51,7 @@ public class MemberServiceImpl implements MemberService {
 	public void doJoin(Map<String, Object> param) {
 		String memberPw = (String) param.get("memberPw");
 
-		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
+		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder(10);
 
 		String securityPassword = pwEncoder.encode(memberPw);
 
@@ -79,8 +79,8 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public MemberVO getMemberByMemberNameAndEmail(Map<String, Object> param) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return memberMapper.getMemberByMemberNameAndEmail(param);
 	}
 
 	@Override
@@ -154,32 +154,31 @@ public class MemberServiceImpl implements MemberService {
 			result = Util.MapResultAlert("F-14", "비밀번호 입력 오류", "비밀번호는 영문과 특수문자 숫자를 포함하며 8자 이상 18자 이하여야 합니다.", "error");
 			return result;
 		} else if(isEmail == false) {
-			result = Util.MapResultAlert("F-14", "이메일 입력 오류", "이메일 양식을 지켜주세요.", "error");
+			result = Util.MapResultAlert("F-15", "이메일 입력 오류", "이메일 양식을 지켜주세요.", "error");
 			return result;
 		}
 		
 		MemberVO member = memberMapper.getMemberByMemberId(memberId);
 		
 		if ( member != null ) {
-			result = Util.MapResultAlert("F-14", "아이디 중복 오류", "이미 사용중인 아이디 입니다.", "error");
+			result = Util.MapResultAlert("F-16", "아이디 중복 오류", "이미 사용중인 아이디 입니다.", "error");
 			return result;
 		}
 		
 		MemberVO dupMember = memberMapper.getMemberByMemberNameAndEmailAndPhNum(param);
 		
 		if ( dupMember != null ) {
-			result = Util.MapResultAlert("F-14", "계정 중복 생성 오류", "계정은 한 분 당 한 개만 생성 가능합니다.", "error");
+			result = Util.MapResultAlert("F-17", "계정 중복 생성 오류", "계정은 한 분 당 한 개만 생성 가능합니다.", "error");
 			return result;
 		}
 		
-		result = Util.MapResultAlert("S-1", "계정 생성 완료", "\"" + memberName + "\" 님의 회원가입을 환영합니다.", "error");
+		result = Util.MapResultAlert("S-1", "계정 생성 완료", "\"" + memberName + "\" 님의 회원가입을 환영합니다.", "success");
 		return result;
 	}
 
 	@Override
 	public MemberVO getMemberByIdAndEmailAndBirth(Map<String, Object> param) {
-		// TODO Auto-generated method stub
-		return null;
+		return memberMapper.getMemberByIdAndEmailAndBirth(param);
 	}
 
 	@Override
@@ -205,11 +204,14 @@ public class MemberServiceImpl implements MemberService {
 		
 		String memberId = (String) param.get("memberId");
 		String memberPw = (String) param.get("memberPw");
+		
 		String afterLoginURI = (String) param.get("afterLoginURI");
 		
 		MemberVO member = doLoginCheck(param);
 		
 		Map<String, Object> result = new HashMap<>();
+		
+		logger.debug("member=" + member);
 		
 		result.put("member", member);
 		
@@ -228,7 +230,7 @@ public class MemberServiceImpl implements MemberService {
 			return result;
 		}
 		
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 		
 		boolean loginPwCheck = encoder.matches(memberPw, member.getMemberPw());
 		
@@ -240,6 +242,79 @@ public class MemberServiceImpl implements MemberService {
 		
 		result = Util.MapResultAlert("S-1", "로그인 성공", "로그인을 환영합니다.", "success");
 		
+		return result;
+	}
+
+	@Override
+	public Map<String,Object> checkJoinPolicy(Map<String, Object> param) {
+		Map<String, Object> result = new HashMap<>();
+		
+		String policyUse = (String) param.get("policyUse");
+		String privacyPolicy = (String) param.get("privacyPolicy");
+		String marketing = (String) param.get("marketPolicy");
+		
+		if( policyUse == null || policyUse.trim().equals("on") == false ) {
+			result = Util.MapResultAlert("F-1", "이용약관 미동의", "이용약관에 동의 해주셔야 회원가입이 가능합니다", "error");
+			return result; 
+		}
+		
+		if( privacyPolicy == null || privacyPolicy.trim().equals("on") == false ) {
+			result = Util.MapResultAlert("F-2", "처리방침 미동의", "개인정보 처리방침에 동의 해주셔야 회원가입이 가능합니다", "error");
+			return result;
+		}
+		
+		String url = "/user/member/join.do";
+		
+		if( marketing != null ) {
+			url= url + "?marketing=" + marketing;
+			result = Util.MapResultAlert("S-1", "동의", "마케팅 활용에 동의해주셨습니다.", "info");
+			
+			result.put("redirectURI", url);
+			
+			return result;
+		}
+		
+		logger.debug("url=" + url);
+		
+		result = Util.MapResultAlert("S-2", "", "", "info");
+		result.put("redirectURI", url);
+		
+		return result;
+	}
+
+	@Override
+	public Map<String, Object> doFindId(Map<String, Object> param) {
+		
+		MemberVO member = getMemberByMemberNameAndEmail(param);
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		if(member == null) {
+			result = Util.MapResultReturn("F-1", "입력하신 정보와 일치하는 아이디가 없습니다.");
+			
+			return result;
+		}
+		
+		String memberId = (String) member.getMemberId();
+		
+		result = Util.MapResultReturn("S-1", "회원님의 아이디는 " + memberId + " 입니다.");
+		
+		return result;
+	}
+
+	@Override
+	public Map<String, Object> doFindPw(Map<String, Object> param) {
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		MemberVO member = getMemberByIdAndEmailAndBirth(param);
+		
+		if(member == null) {
+			result = Util.MapResultAlert("F-1", "계정정보 없음", "입력하신 정보와 일치하는 계정이 없습니다.", "error");
+			return result;
+		}
+		
+		result = Util.MapResultAlert("S-1", "인증번호 발송" , member.getMemberEmail() + "로 인증번호를 발송 했습니다.", "info");
 		return result;
 	}
 

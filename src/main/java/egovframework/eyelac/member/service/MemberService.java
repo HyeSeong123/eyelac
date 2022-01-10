@@ -32,4 +32,10 @@ public interface MemberService{
 
 	Map<String, Object> getLoginMsg(Map<String, Object> param);
 
+	Map<String, Object> checkJoinPolicy(Map<String, Object> param);
+
+	Map<String, Object> doFindId(Map<String, Object> param);
+
+	Map<String, Object> doFindPw(Map<String, Object> param);
+
 }

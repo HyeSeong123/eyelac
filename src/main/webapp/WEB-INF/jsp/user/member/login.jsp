@@ -7,7 +7,7 @@
 
 <script>
 	function changeActive(){
-		let memberPw = $('#memberPw')
+		let memberPw = $('#memberPw');
 		
 		memberPw.toggleClass('active');
 		
@@ -20,15 +20,15 @@
 			
 		}
 	}
+	
 	let nextStep = false;
 	function checkLoginForm(){
 		let frm = document.getElementById('loginForm');
 		let memberId = frm.memberId.value;
-		let memberpw = frm.memberPw.value;
-		
+		let memberPw = frm.memberPw.value;
 		
 		if (nextStep) {
-			alert('처리중입니다.');
+			swal('기다려 주세요!', '처리중입니다.', "info");
 			return;
 		}
 		
@@ -36,7 +36,7 @@
 			sweetAlert('아이디 미입력','아이디를 입력해주세요','error', frm.memberId);
 			frm.memberId.focus();
 			return;
-		} else if(memberPw.value.length < 1){
+		} else if(memberPw.length < 1){
 			sweetAlert('패스워드 미입력','패스워드를 입력해주세요','error', frm.memberPw);
 			return;
 		}
@@ -47,27 +47,33 @@
 			
 			var xhr = new XMLHttpRequest();
 			
-			xhr.open('POST', '/user/member/doLogin.do?ajax=true',true);
-			
+			xhr.open('POST', '/user/member/doLogin.do?ajax=true&memberId=' + memberId + "&memberPw=" + memberPw,true);
 			xhr.responseType = 'json';
 			
 			xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 			
-			xhr.send("memberId=" + memberId + "&memberPw=" + memberPw);
+			xhr.send();
 			
 			xhr.onload = () => {
 				if (xhr.status == 200){
 					let result = xhr.response;
 					let resultVal = result.result; 
 					console.log(result);
-					sweetAlert(resultVal.alertTitle,resultVal.alertMsg,resultVal.alertIcon);
 					
 					if ( resultVal.resultCode.includes("F-") ){
+						sweetAlert(resultVal.alertTitle,resultVal.alertMsg,resultVal.alertIcon, frm.memberId);
 						nextStep = false;	
+					}	else if (resultVal.resultCode.includes("S-") ) {
+						swal({
+							title : resultVal.alertTitle,
+							text : resultVal.alertMsg,
+							icon : resultVal.alertIcon,
+						}).then(function(){
+							location.replace(resultVal.afterLoginURI);
+						});
 					} 
-					
-				} else{
-					console.log("통신 실패");
+				} else {
+					nextStep = false;
 				}
 			}
 		}

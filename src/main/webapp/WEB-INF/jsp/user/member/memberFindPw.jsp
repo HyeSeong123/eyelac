@@ -53,6 +53,18 @@
 						sweetAlert(result.alertTitle, result.alertMsg, result.alertIcon, frm.memberId);
 					} else if ( result.resultCode.includes("S-") ){
 						sweetAlert(result.alertTitle, result.alertMsg, result.alertIcon, frm.certificationInput);
+						
+						var xhr2 = new XMLHttpRequest();
+						
+						xhr2.open('POST', '/user/email/emailCheck.do?ajax=true&email=' +memberEmail ,true);
+						
+						xhr2.responseType = 'json';
+						
+						xhr2.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+						
+						xhr2.send();
+						
+						
 					}
 					
 				} else{
@@ -97,10 +109,13 @@
 					</div>
 				</div>
 				
-				<section class="box_input">
+				<section class="box_input mt-5">
 					<div class="certification_input box_input_input">
-						<span>인증번호</span>
+						<span class="text-left">인증번호</span>
 						<input class="" type="text" name="certificationInput" id="certificationInput" placeholder="인증번호">
+					</div>
+					<div class="certification_btn">
+						<button type="submit" value="button" onclick="">인증</button>
 					</div>
 				</section>
 				

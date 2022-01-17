@@ -64,8 +64,14 @@
 						
 						xhr2.send();
 						
-						
-					}
+						xhr2.onload = () => {
+							if (xhr.status == 200){
+								let resultVal2 = xhr2.response;
+								let result2 = resultVal2.tempKey;
+								console.log(result2);
+								console.log(resultVal2);
+							}
+						}
 					
 				} else{
 					console.log("통신 실패");
@@ -73,6 +79,7 @@
 			}
 		}
 	}
+}
 </script>
 
 <main class="main">

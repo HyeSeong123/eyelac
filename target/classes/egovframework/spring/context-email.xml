@@ -8,14 +8,16 @@
     	<property name="host" value="smtp.gmail.com"/>
     	<property name="port" value="587"/>
     	<property name="username" value="banggu1997"/>
-    	<property name="password" value="baobab612!@"/>
+    	<property name="password" value="vsklcjotozddwnxl"/>
     	
     	<property name="javaMailProperties">
     		<props>
-    			<prop key="mail.transport.protocol">smtp</prop>
-    			<prop key="mail.smtp.auth">true</prop>
     			<prop key="mail.smtp.starttls.enable">true</prop>
-    			<prop key="mail.debug">true</prop>
+                <prop key="mail.smtp.auth">true    </prop>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.debug">true</prop>
+                <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
     		</props>
     	</property>
     </bean>

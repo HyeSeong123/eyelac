@@ -1,7 +1,9 @@
 package egovframework.eyelac.email.web;
 
 import java.io.PrintWriter;
+import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import egovframework.eyelac.member.service.MemberService;
 import egovframework.eyelac.util.TempKey;
 
 @Controller
@@ -29,17 +32,22 @@ public class EmailController {
 	@Autowired
 	private JavaMailSender mailSender;
 	
+	@Resource(name="memberService")
+	private MemberService memberService;
+	
 	@RequestMapping(value="/user/email/emailCheck.do", method=RequestMethod.POST)
 	@ResponseBody
-	public void mailSending(@RequestParam String email, HttpServletResponse res) {
+	public void mailSending(@RequestParam Map<String, Object> param, HttpServletResponse res) {
 		ModelAndView mav = new ModelAndView();
 		
 		String setFrom = "banggu1997@gmail.com";
-		String key = new TempKey().getKey(6);
-		logger.debug("key=" + key);
-		String toMail = email;
+		String key = new TempKey().getKey(8);
+		String toMail = (String) param.get("email");
+		
+		logger.debug("param=" + param);
+		
 		String title = "아일락 메일 인증 서비스 입니다.";
-		String content = new StringBuffer().append("인증번호 : ").append(key).toString();
+		String content = new StringBuffer().append("임시비밀번호 : ").append(key).toString();
 		
 		try {
 			res.setContentType("UTF-8");
@@ -59,7 +67,8 @@ public class EmailController {
 			
 			mailSender.send(message);
 			
-			mav.addObject("tempKey= " + key);
+			param.put("key", key);
+			memberService.changePassword(param);
 			
 		} catch(Exception e) {
 			logger.info("에러=" + e);

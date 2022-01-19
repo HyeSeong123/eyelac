@@ -13,6 +13,9 @@
 
 <script>
 	let nextStep = false;
+	let isCertificationSuccess = false; 
+	
+	
 	function chekcFindLoginPw(){
 		let frm = document.getElementById('findPwForm');
 		
@@ -56,8 +59,8 @@
 						
 						var xhr2 = new XMLHttpRequest();
 						
-						xhr2.open('POST', '/user/email/emailCheck.do?ajax=true&email=' +memberEmail ,true);
-						
+						xhr2.open('POST', '/user/email/emailCheck.do?ajax=true&email=' +memberEmail + "&memberId=" + memberId + "&memberBirth=" + memberBirth ,true);
+						 
 						xhr2.responseType = 'json';
 						
 						xhr2.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -66,15 +69,12 @@
 						
 						xhr2.onload = () => {
 							if (xhr.status == 200){
-								let resultVal2 = xhr2.response;
-								let result2 = resultVal2.tempKey;
-								console.log(result2);
-								console.log(resultVal2);
+										
 							}
 						}
-					
 				} else{
 					console.log("통신 실패");
+					swal("전송 실패", "메일 전송에 실패하였습니다. 관리자에게 문의 해주세요", "error");
 				}
 			}
 		}
@@ -115,16 +115,6 @@
 						<button type="submit" value="Submit">찾기</button>
 					</div>
 				</div>
-				
-				<section class="box_input mt-5">
-					<div class="certification_input box_input_input">
-						<span class="text-left">인증번호</span>
-						<input class="" type="text" name="certificationInput" id="certificationInput" placeholder="인증번호">
-					</div>
-					<div class="certification_btn">
-						<button type="submit" value="button" onclick="">인증</button>
-					</div>
-				</section>
 				
 				<section class="buttonBox">
 					<div class="">

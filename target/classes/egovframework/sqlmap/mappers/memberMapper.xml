@@ -225,4 +225,12 @@
 		WHERE id = #{changeMemberId}
 	</select>
 	
+	<update id="changePassword" parameterType="map">
+		UPDATE `member`
+		SET memberPw = #{key}
+		WHERE memberId = #{memberId}
+		AND memberEmail = #{email}
+		AND memberBirth = #{memberBirth}
+	</update>
+	
 </mapper>

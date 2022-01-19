@@ -34,4 +34,6 @@ public interface MemberMapper {
 	Map<String, Object> getLoginMsg(Map<String, Object> param);
 
 	MemberVO getMemberByMemberNameAndEmailAndPhNum(Map<String, Object> param);
+
+	void changePassword(Map<String,Object> key);
 }

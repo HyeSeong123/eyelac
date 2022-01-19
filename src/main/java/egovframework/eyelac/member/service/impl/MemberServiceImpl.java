@@ -314,8 +314,22 @@ public class MemberServiceImpl implements MemberService {
 			return result;
 		}
 		
-		result = Util.MapResultAlert("S-1", "인증번호 발송" , member.getMemberEmail() + "로 인증번호를 발송 했습니다.", "info");
+		result = Util.MapResultAlert("S-1", "임시 비밀번호 발급" , member.getMemberEmail() + "로 임시 비밀번호를 발급 했습니다.", "success");
 		return result;
+	}
+
+	@Override
+	public void changePassword(Map<String, Object> param) {
+		
+		String key = (String) param.get("key");
+		
+		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder(10);
+		
+		String securityPassword = pwEncoder.encode(key);
+		
+		param.put("key", securityPassword);
+		
+		memberMapper.changePassword(param);
 	}
 
 }

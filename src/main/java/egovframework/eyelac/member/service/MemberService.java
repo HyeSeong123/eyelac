@@ -38,4 +38,6 @@ public interface MemberService{
 
 	Map<String, Object> doFindPw(Map<String, Object> param);
 
+	void changePassword(Map<String, Object> param);
+
 }

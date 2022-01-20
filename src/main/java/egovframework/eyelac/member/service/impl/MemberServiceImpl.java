@@ -90,13 +90,9 @@ public class MemberServiceImpl implements MemberService {
 		
 		String memberName = (String) param.get("memberName");
 		String memberPhoneNumber = (String) param.get("memberPhoneNumber");
-		String memberId = (String) param.get("memberId");
 		String memberPw = (String) param.get("memberPw");
 		String memberPwConfirm = (String) param.get("memberPwConfirm");
-		String memberEmail = (String) param.get("memberEmail");
 		String memberBirth = (String) param.get("memberBirth");
-		String memberPostcode = (String) param.get("memberPostCode");
-		String memberAddress = (String) param.get("memberAddress");
 		String gender = (String) param.get("gender");
 		
 		memberPhoneNumber.replaceAll("-", "");
@@ -108,38 +104,22 @@ public class MemberServiceImpl implements MemberService {
 		} else if(memberPhoneNumber == null || memberPhoneNumber.equals("")) {
 			result = Util.MapResultAlert("F-2", "전화번호 미입력", "휴대폰 번호를 입력해주세요", "error");
 			return result;
-		} else if(memberId == null || memberId.equals("")) {
-			result = Util.MapResultAlert("F-3", "아이디 미입력", "아이디를 입력해주세요", "error");
-			return result;
 		} else if(memberPw == null || memberPw.equals("")) {
 			result = Util.MapResultAlert("F-4", "패스워드 미입력", "패스워드를 입력해주세요", "error");
 			return result;
 		} else if(memberPwConfirm == null || memberPwConfirm.equals("")) {
 			result = Util.MapResultAlert("F-5", "패스워드 확인 미입력", "패스워드 확인을 입력해주세요", "error");
 			return result;
-		} else if(memberEmail == null || memberEmail.equals("")) {
-			result = Util.MapResultAlert("F-6", "이메일 미입력", "이메일을 입력해주세요", "error");
-			return result;
 		} else if(memberBirth == null || memberBirth.equals("")) {
 			result = Util.MapResultAlert("F-7", "생년월일 미입력", "생년월일을 입력해주세요", "error");
 			return result;
-		} else if(memberPostcode == null || memberPostcode.equals("")) {
-			result = Util.MapResultAlert("F-8", "우편번호 미입력", "우편번호를 입력해주세요", "error");
-			return result;
-		} else if(memberAddress == null || memberAddress.equals("")) {
-			result = Util.MapResultAlert("F-9", "주소 미입력", "주소를 입력해주세요", "error");
-			return result;
-		}
-		else if(gender == null || gender.equals("")) {
+		} else if(gender == null || gender.equals("")) {
 			result = Util.MapResultAlert("F-10", "성별 미입력", "성별을 입력해주세요", "success");
 			return result;
 		}
 		
 		boolean isName = memberName.matches("^[a-zA-Z가-힣]*$");
 		boolean isPhoneNumber = memberPhoneNumber.matches("\\d{11}");
-		boolean isId = memberId.matches("^[a-zA-Z]{1}[a-zA-Z0-9_]{5,13}$");
-		boolean isPassword = memberPw.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,19}$");
-		boolean isEmail = memberEmail.matches("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$");
 		
 		if ( isName == false ) {
 			result = Util.MapResultAlert("F-11", "성명 입력 오류", "성명에는 이름, 영어 외 문자가 들어갈 수 없습니다.", "error");
@@ -147,28 +127,15 @@ public class MemberServiceImpl implements MemberService {
 		} else if(isPhoneNumber == false) {
 			result = Util.MapResultAlert("F-12", "전화번호 입력 오류", "휴대전화 번호 양식을 지켜주세요(- 제외)", "error");
 			return result;
-		} else if(isId == false) {
-			result = Util.MapResultAlert("F-13", "아이디 입력 오류", "아이디에는 특수문자가 포함되지 않은 영어 및 숫자로 6자 이상이어야 합니다.(숫자로 시작 불가능)", "error");
-			return result;
-		} else if(isPassword == false) {
-			result = Util.MapResultAlert("F-14", "비밀번호 입력 오류", "비밀번호는 영문과 특수문자 숫자를 포함하며 8자 이상 18자 이하여야 합니다.", "error");
-			return result;
-		} else if(isEmail == false) {
-			result = Util.MapResultAlert("F-15", "이메일 입력 오류", "이메일 양식을 지켜주세요.", "error");
+		} else if (memberPw.trim().length() < 3) {
+			result = Util.MapResultAlert("F-14", "비밀번호 입력 오류", "비밀번호를 4글자 이상으로 입력해주세요.", "error");
 			return result;
 		}
 		
-		MemberVO member = memberMapper.getMemberByMemberId(memberId);
+		MemberVO member = memberMapper.getMemberByMemberName(memberName);
 		
 		if ( member != null ) {
-			result = Util.MapResultAlert("F-16", "아이디 중복 오류", "이미 사용중인 아이디 입니다.", "error");
-			return result;
-		}
-		
-		MemberVO dupMember = memberMapper.getMemberByMemberNameAndEmailAndPhNum(param);
-		
-		if ( dupMember != null ) {
-			result = Util.MapResultAlert("F-17", "계정 중복 생성 오류", "계정은 한 분 당 한 개만 생성 가능합니다.", "error");
+			result = Util.MapResultAlert("F-16", "중복 생성 오류", "이미 회원님의 계정이 존재 합니다.", "error");
 			return result;
 		}
 		

@@ -30,6 +30,14 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.0/ScrollTrigger.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 	
+	<meta name="description" content="아일락 눈썹 전문 샵 입니다." />
+	<meta property="og:locale" content="ko_KR" />
+	<meta property="og:type" content="site" />
+	<meta property="og:title" content="Eyelac Beauty Salon" />
+	<meta property="og:description" content="탄방동, 대전, 눈썹, 눈썹정리, 눈썹문신, 아일락, Eyelac" />
+	<meta property="og:url" content="eyelac.shop" />
+	<meta property="og:site_name" content="Eyelac Beauty Salon" />
+	<link rel="icon" href="/images/favicon.ico" />
 </head>
 <body>
 	<tiles:insertAttribute name="userHeader" />

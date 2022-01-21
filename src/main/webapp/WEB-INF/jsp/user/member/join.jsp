@@ -83,7 +83,6 @@
 		nextStep = true;
 		
 		if(nextStep){
-			
 			$.ajax({
 				type : "POST",
 				data : $('#join_form').serialize() ,
@@ -104,171 +103,96 @@
 					
 				}
 			});
-			
 		}
 	}
 	function selectArea(){
-		let areaSeoul = ['종로구', '중구', '용산구', '성동구', '광진구', '동대문구', '중랑구', '성북구',
-						'강북구', '도봉구', '노원구', '은평구', '서대문구', '마포구', '양천구', '강서구',
-						'구로구', '금천구', '영등포구', '동작구', '관악구', '서초구', '강남구', '송파구', '강동구'];
 		
-		let areaBusan = ['중구', '서구', '동구', '영도구', '부산진구', '동래구', '남구', '북구', '해운대구', '사하구', '금정구', '강서구',
-						 '연제구', '수영구', '사상구', '기장군'];
-		
-		let areaIncheon = ['동구', '중구', '미추홀구', '연수구', '남동구', '부평구', '계양구', '서구', '광화군', '옹진군'];
-		
-		let areaGwangju = ['동구', '서구', '남구', '북구', '광산구'];
-		
-		let areaDaejeon = ['동구', '중구', '서구', '유성구', '대덕구'];
-		
-		let areaUlsan = ['중구', '남구', '동구', '북구', '울주군'];
-		
-		let areaSejong = ['세종특별자치시'];
-		
-		let areaGyeonggi = ['수원시', '성남시', '고양시', '용인시', '부천시', '안산시', '안양시', '남양주시', '화성시', '평택시', '의정부시', '시흥시', '파주시', '광명시',
-							'김포시', '군포시', '광주시', '이천시', '양주시', '오산시', '구리시', '안성시', '포천시', '의왕시', '하남시', '여주시', '양평군', '동두천시',
-							'과천시', '가평군', '연천군'];
-		
-		let areaGangwon = ['춘천시', '원주시', '강릉시', '동해시', '태백시', '속초시', '삼척시', '홍천군', '횡성군', '영월군', '평창군', '정선군', '철원군', '화천군',
-						   '양구군', '인제군', '고성군', '양양군'];
-		
-		let areaChungbuk = ['청주시', '충주시', '제천시', '보은군', '옥천군', '영동군', '진천군', '괴산군', '음성군', '단양군', '증평군'];
-		
-		let areaChungnam = ['천안시', '공주시', '보령시', '아산시', '서산시', '논산시', '계룡시', '당진시', '금산군', '부여군', '서천군', '청양군', '홍성군', '예산군', '태안군'];
-		
-		let selectList = document.querySelector('.area2');
-		selectList.options.length = 1;
 		let area1 = document.querySelector('.area1').value;
-		viewArea(area1);
 		
-		function viewArea(area){
-			if ( area == "서울"){
-				for ( var i = 0; i < areaSeoul.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaSeoul[i];
-					option.text = areaSeoul[i];
-					selectList.appendChild(option);
-				}
+		var xhr = new XMLHttpRequest();
+		
+		xhr.open('POST', '/user/area/getSiGunGu.do?ajax=true',true);
+		
+		xhr.responseType = 'json';
+		
+		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		
+		xhr.send("area1=" + area1);
+		
+		xhr.onload = () => {
+			if (xhr.status == 200){
+				let resultVal = xhr.response;
+				
+				result = resultVal.result;
+				
+				let areaList = [];
+				
+				result.forEach((area) => {
+					areaList.push([area.area2]);
+				})
+				
+				console.log(areaList);
+				
+				let selectList = document.querySelector(".area2");
+				
+				selectList.options.length = 1;
+				
+				for (var i = 0; i < areaList.length; i++) {
+				    let option = document.createElement("option");
+				    if ( areaList[i] != "" ){
+					    option.value = areaList[i];
+					    option.text = areaList[i];
+					    selectList.appendChild(option);
+				    }
+				  }
+			} else {
+				console.log("통신실패");
 			}
-			else if ( area == "부산"){
-				for ( var i = 0; i < areaBusan.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaBusan[i];
-					option.text = areaBusan[i];
-					selectList.appendChild(option);
-				}
-			}
-			else if ( area == "인천"){
-				for ( var i = 0; i < areaIncheon.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaIncheon[i];
-					option.text = areaIncheon[i];
-					selectList.appendChild(option);
-				}
-			}
-			else if ( area == "광주"){
-				for ( var i = 0; i < areaGwangju.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaGwangju[i];
-					option.text = areaGwangju[i];
-					selectList.appendChild(option);
-				}
-			}
-			else if ( area == "대전"){
-				for ( var i = 0; i < areaDaejeon.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaDaejeon[i];
-					option.text = areaDaejeon[i];
-					selectList.appendChild(option);
-				}
-			}
-			else if ( area == "울산"){
-				for ( var i = 0; i < areaUlsan.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaUlsan[i];
-					option.text = areaUlsan[i];
-					selectList.appendChild(option);
-				}
-			}
-			else if ( area == "세종"){
-				for ( var i = 0; i < areaSejong.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaSejong[i];
-					option.text = areaSejong[i];
-					selectList.appendChild(option);
-				}
-			}
-			else if ( area == "경기"){
-				for ( var i = 0; i < areaGyeonggi.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaGyeonggi[i];
-					option.text = areaGyeonggi[i];
-					selectList.appendChild(option);
-				}
-			}
-			else if ( area == "강원"){
-				for ( var i = 0; i < areaGangwon.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaGangwon[i];
-					option.text = areaGangwon[i];
-					selectList.appendChild(option);
-				}
-			}
-			else if ( area == "충북"){
-				for ( var i = 0; i < areaChungbuk.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaChungbuk[i];
-					option.text = areaChungbuk[i];
-					selectList.appendChild(option);
-				}
-			}
-			else if ( area == "충남"){
-				for ( var i = 0; i < areaChungnam.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaChungnam[i];
-					option.text = areaChungnam[i];
-					selectList.appendChild(option);
-				}
-			}
-			else if ( area == "전북"){
-				for ( var i = 0; i < areaJeonbuk.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaJeonbuk[i];
-					option.text = areaJeonbuk[i];
-					selectList.appendChild(option);
-				}
-			}
-			else if ( area == "전남"){
-				for ( var i = 0; i < areaJeonnam.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaJeonnam[i];
-					option.text = areaJeonnam[i];
-					selectList.appendChild(option);
-				}
-			}
-			else if ( area == "경북"){
-				for ( var i = 0; i < areaGyeongbuk.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaGyeongbuk[i];
-					option.text = areaGyeongbuk[i];
-					selectList.appendChild(option);
-				}
-			}
-			else if ( area == "경남"){
-				for ( var i = 0; i < areaGyeongnam.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaGyeongnam[i];
-					option.text = areaGyeongnam[i];
-					selectList.appendChild(option);
-				}
-			}
-			else if ( area == "제주"){
-				for ( var i = 0; i < areaJeju.length; i ++ ){
-					let option = document.createElement("option");
-					option.value = areaJeju[i];
-					option.text = areaJeju[i];
-					selectList.appendChild(option);
-				}
+		}
+	}
+function selectArea2(){
+		
+		let area1 = document.querySelector('.area1').value;
+		let area2 = document.querySelector('.area2').value;
+		
+		var xhr = new XMLHttpRequest();
+		
+		xhr.open('POST', '/user/area/getDetailArea.do?ajax=true',true);
+		
+		xhr.responseType = 'json';
+		
+		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		
+		xhr.send("area1=" + area1 + "&area2=" + area2);
+		
+		xhr.onload = () => {
+			if (xhr.status == 200){
+				let resultVal = xhr.response;
+				
+				result = resultVal.result;
+				
+				let areaList = [];
+				
+				result.forEach((area) => {
+					areaList.push([area.area3]);
+				})
+				
+				console.log(areaList);
+				
+				let selectList = document.querySelector(".area3");
+				
+				selectList.options.length = 1;
+				
+				for (var i = 0; i < areaList.length; i++) {
+				    let option = document.createElement("option");
+				    if ( areaList[i] != "" ){
+					    option.value = areaList[i];
+					    option.text = areaList[i];
+					    selectList.appendChild(option);
+				    }
+				  }
+			} else {
+				console.log("통신실패");
 			}
 		}
 	}
@@ -333,27 +257,32 @@
 						<td class="join_address_td">
 							<div class="join_address">
 								<select name="area1" onChange="selectArea();" class="area1">
-								  <option>-선택-</option>
-								  <option value='서울'>서울</option>
-								  <option value='부산'>부산</option>
-								  <option value='대구'>대구</option>
-								  <option value='인천'>인천</option>
-								  <option value='광주'>광주</option>
-								  <option value='대전'>대전</option>
-								  <option value='울산'>울산</option>
-								  <option value='세종'>세종</option>
-								  <option value='경기'>경기</option>
-								  <option value='강원'>강원</option>
+								  <option>- 지역 선택 -</option>
+								  <option value='서울특별시'>서울</option>
+								  <option value='부산광역시'>부산</option>
+								  <option value='대구광역시'>대구</option>
+								  <option value='인천광역시'>인천</option>
+								  <option value='광주광역시'>광주</option>
+								  <option value='대전광역시'>대전</option>
+								  <option value='울산광역시'>울산</option>
+								  <option value='세종특별자치시'>세종</option>
+								  <option value='경기도'>경기</option>
+								  <option value='강원도'>강원</option>
 								  <option value='충북'>충북</option>
 								  <option value='충남'>충남</option>
 								  <option value='전북' >전북</option>
 								  <option value='전남'>전남</option>
 								  <option value='경북'>경북</option>
 								  <option value='경남'>경남</option>
-								  <option value='제주'>제주</option>
+								  <option value='제주특별자치도'>제주</option>
 								</select>
+								
 								<select name="area2" onChange="selectArea2();" class="area2">
-								  <option>-선택-</option>
+								  <option>- 시/군/구 선택 -</option>
+								</select>
+								
+								<select name="area3" onChange="selectArea3();" class="area3">
+								  <option>- 읍/내/동 선택 -</option>
 								</select>
 							</div>
 							

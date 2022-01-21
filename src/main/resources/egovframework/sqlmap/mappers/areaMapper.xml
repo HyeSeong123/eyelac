@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.eyelac.area.service.impl.AreaMapper">
+	
+	<resultMap id="areaMap" type="areaVO">
+		<result property="area1" column="area1" />
+		<result property="area2" column="area2" />
+		<result property="area3" column="area3" />
+	</resultMap>
+	
+	<select id="getSiGunGu" resultMap="areaMap">
+		SELECT distinct area2
+		from area
+		WHERE area1= #{area1}
+		ORDER BY area2 ASC
+	</select>
+	
+	<select id="getDetailArea" resultMap="areaMap">
+		SELECT area3
+		from area
+		WHERE area1= #{area1}
+		AND area2 = #{area2}
+		ORDER BY area3 ASC
+	</select>
+</mapper>

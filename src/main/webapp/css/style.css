@@ -1683,6 +1683,17 @@ header{
 	}
 }
 
+.join_address .area1,
+.join_address .area2,
+.join_address .area3
+{
+	height : 26px;
+}
+.join_address .area2,
+.join_address .area3
+{
+	margin-left : 20px;
+}
 @media(max-width : 1050px){
 	.join_page .join_container .join_table{
 		width : 100%;
@@ -1714,14 +1725,12 @@ header{
 	.join_page .join_container .join_table td input[type=text],
 	.join_page .join_container .join_table td input[type=password],
 	.join_page .join_container .join_table td input[type=number],
-	.join_page .join_container .join_table td input[type=email],
-	.join_page .join_container .join_table td input[type=date],
-	.join_page .join_container .join_table td input[type=tel]
 	{
 		width : 95%;
 	}
 	.join_page .join_container .join_table .join_address{
 		flex-direction: column;
+		align-items : center;
 	}
 	.join_page .join_container .join_table .join_address input:first-child,
 	.join_page .join_container .join_table .join_address input:last-child
@@ -1748,7 +1757,20 @@ header{
 		margin-bottom : 10px;
 	}
 		.join_page .open_password {
-	    right: 8%;
+	    right: 20%;
+	}
+	.join_address .area1,
+	.join_address .area2,
+	.join_address .area3
+	{
+		width : 90%;
+		margin-left : 0;
+		margin-right : 0;
+	}
+	.join_address .area2,
+	.join_address .area3
+	{
+		margin-top : 10px;
 	}
 }
 /* 회원 가입 화면 끝 */

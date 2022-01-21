@@ -6,5 +6,6 @@
 		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
 		<typeAlias alias="boardVO" type="egovframework.eyelac.board.service.impl.BoardVO" />
 		<typeAlias alias="memberVO" type="egovframework.eyelac.member.service.impl.MemberVO" />
+		<typeAlias alias="areaVO" type="egovframework.eyelac.area.service.impl.AreaVO" />
     </typeAliases>
 </configuration>

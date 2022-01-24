@@ -77,34 +77,16 @@ public class MemberController {
         return mav;
     }
 	
-	@RequestMapping("/user/member/memberIdDupliCheck.do")
-    public ModelAndView doMemberIdDupliCheck(HttpServletRequest req, @RequestParam("memberId") String memberId) throws Exception {
-		
-		ModelAndView mav = new ModelAndView();
-
-		Map<String, Object> dupIdValidation = memberService.memberIdDuplicateResult(memberId); 
-		
-		mav.addObject("result", dupIdValidation);
-		
-		mav.setView(jsonView);
-		return mav; 
-	}
 	@RequestMapping("/user/member/doJoin.do")
     public ModelAndView doJoin(HttpServletRequest req, @RequestParam Map<String,Object> param) throws Exception {
 		
 		ModelAndView mav = new ModelAndView();
 		
 		String smsAgree = (String) param.get("SMSAgree");
-		String emailAgree = (String) param.get("emailAgree");
 		
 		if(smsAgree == null) {
 			smsAgree = "N";
 			param.put("smsAgree", smsAgree);
-		}
-		
-		if(emailAgree == null) {
-			emailAgree = "N";
-			param.put("emailAgree", emailAgree);
 		}
 		
 		Map<String, Object> result = new HashMap<>();
@@ -113,7 +95,7 @@ public class MemberController {
 		
 		String msg = (String) result.get("resultCode");
 		
-		logger.debug("msg=" + msg);
+		logger.debug("param= " + param);
 		
 		if( msg.contains("S-1") == false ) {
 			
@@ -159,11 +141,11 @@ public class MemberController {
 	@ResponseBody
     public ModelAndView doLogin(HttpServletRequest req, HttpSession session, @RequestParam Map<String,Object> param) throws Exception {
     	
+		Map<String, Object> result = memberService.doLoginCheck(param);
+		
 		ModelAndView mav = new ModelAndView();
 		
-		Map<String, Object> result = memberService.getLoginMsg(param); 
-		
-		String msg = (String) result.get("resultCode"); 
+		String msg = (String) result.get("resultCode");
 		
 		if( ! msg.contains("S-") ) {
 			mav.addObject("result", result);
@@ -172,9 +154,11 @@ public class MemberController {
 			return mav;
 		}
 		
-		MemberVO member = memberService.getMemberByMemberId( (String) param.get("memberId") );
+		String memberName = (String) param.get("memberName");
 		
-        String afterLoginURI = (String) param.get("afterLoginURI");
+		MemberVO member = memberService.getMemberByMemberName(memberName);
+		
+		String afterLoginURI = (String) param.get("afterLoginURI");
         
         if(afterLoginURI == null || afterLoginURI == "") {
         	afterLoginURI = "/user/index.do";
@@ -195,16 +179,6 @@ public class MemberController {
 		return mav;
     }
 	
-	@RequestMapping("/user/member/memberFindId.do")
-    public ModelAndView showMemberFindId(HttpServletRequest req, HttpSession session, @RequestParam Map<String,Object> param, String afterLoginURI) throws Exception {
-		
-		ModelAndView mav = new ModelAndView();
-		
-		mav.setViewName("/user/member/memberFindId.user");
-		
-		return mav; 
-    }
-	
 	@RequestMapping("/user/member/memberFindPw.do")
     public ModelAndView showMemberFindPw(HttpServletRequest req, HttpSession session, @RequestParam Map<String,Object> param, String afterLoginURI) throws Exception {
 		
@@ -214,32 +188,10 @@ public class MemberController {
 		
 		return mav; 
     }
-	@RequestMapping("/user/member/doFindId.do")
-	public ModelAndView doFindId(HttpServletRequest req, HttpSession session, @RequestParam Map<String, Object> param) {
-		
-		ModelAndView mav = new ModelAndView();
-		
-		Map<String, Object> result = new HashMap<>();
-		
-		result = memberService.doFindId(param);
-		
-		mav.setView(jsonView);
-		
-		mav.addObject("result", result);
-		
-		return mav;
-	}
-	
 	@RequestMapping("/user/member/doFindPw.do")
 	public ModelAndView doFindPw(HttpServletRequest req, HttpSession session, @RequestParam Map<String, Object> param) {
 		
 		ModelAndView mav = new ModelAndView();
-		
-		Map<String, Object> result = memberService.doFindPw(param);
-		
-		logger.debug("result= " + result);
-		
-		mav.addObject("result", result);
 		
 		mav.setView(jsonView);
 		return mav;
@@ -253,29 +205,5 @@ public class MemberController {
 		mav.setViewName("/member/myInforBeforePage");
 		
 		return mav; 
-    }
-	
-	@RequestMapping("/user/member/myInfor.do")
-    public ModelAndView myInfor(HttpServletRequest req, HttpSession session, @RequestParam Map<String,Object> param, String afterLoginURI) throws Exception {
-		
-		ModelAndView mav = new ModelAndView();
-		
-		String memberId = (String) param.get("memberId");
-		Integer changeMemberId = Integer.parseInt(memberId);
-		
-		if(memberId != null) {
-			MemberVO member = memberService.getMemberById(changeMemberId);
-			
-			if ( member != null ) {
-				mav.addObject("member", member);
-			}
-		}
-		
-		mav.setView(jsonView);
-		
-		mav.setViewName("/member/myInfor");
-		
-		return mav; 
-    }
-	
+    }	
 }

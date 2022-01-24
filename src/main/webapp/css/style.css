@@ -1694,39 +1694,9 @@ header{
 {
 	margin-left : 20px;
 }
-@media(max-width : 1050px){
+@media(max-width : 1085px){
 	.join_page .join_container .join_table{
 		width : 100%;
-	}
-	
-}
-
-@media(max-width : 850px){
-	.join_container {
-		width : 90%;
-	}
-}
-
-@media(max-width : 740px){
-	.join_container {
-		width : 100%;
-	}
-}
-
-@media(max-width : 720px){
-	.join_page .join_container .join_table th {
-		width : 20%;
-	}
-	.join_page .join_container .join_table .join_address_td > div{
-		justify-content: center;
-	}
-}
-@media(max-width : 500px){
-	.join_page .join_container .join_table td input[type=text],
-	.join_page .join_container .join_table td input[type=password],
-	.join_page .join_container .join_table td input[type=number],
-	{
-		width : 95%;
 	}
 	.join_page .join_container .join_table .join_address{
 		flex-direction: column;
@@ -1771,6 +1741,35 @@ header{
 	.join_address .area3
 	{
 		margin-top : 10px;
+	}	
+}
+
+@media(max-width : 850px){
+	.join_container {
+		width : 90%;
+	}
+}
+
+@media(max-width : 740px){
+	.join_container {
+		width : 100%;
+	}
+}
+
+@media(max-width : 720px){
+	.join_page .join_container .join_table th {
+		width : 20%;
+	}
+	.join_page .join_container .join_table .join_address_td > div{
+		justify-content: center;
+	}
+}
+@media(max-width : 500px){
+	.join_page .join_container .join_table td input[type=text],
+	.join_page .join_container .join_table td input[type=password],
+	.join_page .join_container .join_table td input[type=number],
+	{
+		width : 95%;
 	}
 }
 /* 회원 가입 화면 끝 */
@@ -1986,7 +1985,14 @@ header{
     margin: 0 auto;
     position: relative;
 }
-
+.findPw_box .buttonBox > div {
+	width : 100%;
+}
+.findPw_box .buttonBox > div:last-child::after {
+	display : none;
+	width : 0;
+	
+}
 @media (max-width : 1500px) and (min-width : 1281px){
 	.findPw_container::after{
 		width : 75%;

@@ -1,7 +1,6 @@
 package egovframework.eyelac.member.service.impl;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -30,57 +29,31 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<MemberVO> getMemberByMemberNames(String memberName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getMemberByMemberEmailCount(String memberEmail) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public MemberVO getMemberByMemberNickname(String memberNickname) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void doJoin(Map<String, Object> param) {
 		String memberPw = (String) param.get("memberPw");
-
+		String area1 = (String) param.get("area1");
+		String area2 = (String) param.get("area2");
+		String area3 = (String) param.get("area3");
+		
+		String memberAddress = area1 + area2 + area3;
+		
 		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder(10);
 
 		String securityPassword = pwEncoder.encode(memberPw);
 
+		param.put("memberAddress", memberAddress);
 		param.put("memberPw", securityPassword);
 
 		memberMapper.doJoin(param);
 	}
 
-	@Override
-	public MemberVO doLoginCheck(Map<String, Object> param) {
-		return memberMapper.doLoginCheck(param);
+	private MemberVO memberDupCheck(Map<String, Object> param) {
+		return memberMapper.getMemberDupCheck(param);
 	}
 
 	@Override
 	public MemberVO getMemberByMemberName(String memberName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public MemberVO getMemberById(Integer changeMemberId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public MemberVO getMemberByMemberNameAndEmail(Map<String, Object> param) {
-		
-		return memberMapper.getMemberByMemberNameAndEmail(param);
+		return memberMapper.getMemberByMemberName(memberName);
 	}
 
 	@Override
@@ -132,7 +105,7 @@ public class MemberServiceImpl implements MemberService {
 			return result;
 		}
 		
-		MemberVO member = memberMapper.getMemberByMemberName(memberName);
+		MemberVO member = memberDupCheck(param);
 		
 		if ( member != null ) {
 			result = Util.MapResultAlert("F-16", "중복 생성 오류", "이미 회원님의 계정이 존재 합니다.", "error");
@@ -140,75 +113,6 @@ public class MemberServiceImpl implements MemberService {
 		}
 		
 		result = Util.MapResultAlert("S-1", "계정 생성 완료", "\"" + memberName + "\" 님의 회원가입을 환영합니다.", "success");
-		return result;
-	}
-
-	@Override
-	public MemberVO getMemberByIdAndEmailAndBirth(Map<String, Object> param) {
-		return memberMapper.getMemberByIdAndEmailAndBirth(param);
-	}
-
-	@Override
-	public Map<String, Object> memberIdDuplicateResult(String memberId) {
-		
-		boolean isId = memberId.matches("^[a-zA-Z]{1}[a-zA-Z0-9_]{5,13}$");
-
-		if (isId == false) {
-			return Util.MapResultReturn("F-1", "아이디를 6글자 이상 13글자 이하 영문으로 숫자가 먼저 오지 않게 지정해주세요.");
-		}
-
-		MemberVO member = getMemberByMemberId(memberId);
-		
-		if (member != null) {
-			return Util.MapResultReturn("F-2", "이미 존재하는 아이디 입니다.");
-		}
-
-		return Util.MapResultReturn("S-1", "사용가능한 아이디 입니다.");
-	}
-
-	@Override
-	public Map<String,Object> getLoginMsg(Map<String, Object> param) {
-		
-		String memberId = (String) param.get("memberId");
-		String memberPw = (String) param.get("memberPw");
-		
-		String afterLoginURI = (String) param.get("afterLoginURI");
-		
-		MemberVO member = doLoginCheck(param);
-		
-		Map<String, Object> result = new HashMap<>();
-		
-		logger.debug("member=" + member);
-		
-		result.put("member", member);
-		
-		if(memberId == null) {
-			result = Util.MapResultAlert("F-1", "아이디 미입력", "아이디를 입력해주세요", "error");
-			return result; 
-		}
-		
-		if(memberPw == null) {
-			Util.MapResultAlert("F-2", "패스워드 미입력", "패스워드를 입력해주세요", "error");
-			return result;
-		}
-		
-		if(member == null) {
-			result = Util.MapResultAlert("F-3", "존재하지 않는 아이디", "일치하는 정보의 계정이 없습니다.", "error");
-			return result;
-		}
-		
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
-		
-		boolean loginPwCheck = encoder.matches(memberPw, member.getMemberPw());
-		
-		if( loginPwCheck == false ) {
-			result = Util.MapResultAlert("F-4", "패스워드 불일치", "계정의 정보와 패스워드가 일치하지 않습니다.", "error");
-			
-			return result;
-		}
-		
-		result = Util.MapResultAlert("S-1", "로그인 성공", "로그인을 환영합니다.", "success");
-		
 		return result;
 	}
 
@@ -250,42 +154,6 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Map<String, Object> doFindId(Map<String, Object> param) {
-		
-		MemberVO member = getMemberByMemberNameAndEmail(param);
-		
-		Map<String, Object> result = new HashMap<>();
-		
-		if(member == null) {
-			result = Util.MapResultReturn("F-1", "입력하신 정보와 일치하는 아이디가 없습니다.");
-			
-			return result;
-		}
-		
-		String memberId = (String) member.getMemberId();
-		
-		result = Util.MapResultReturn("S-1", "회원님의 아이디는 " + memberId + " 입니다.");
-		
-		return result;
-	}
-
-	@Override
-	public Map<String, Object> doFindPw(Map<String, Object> param) {
-		
-		Map<String, Object> result = new HashMap<>();
-		
-		MemberVO member = getMemberByIdAndEmailAndBirth(param);
-		
-		if(member == null) {
-			result = Util.MapResultAlert("F-1", "계정정보 없음", "입력하신 정보와 일치하는 계정이 없습니다.", "error");
-			return result;
-		}
-		
-		result = Util.MapResultAlert("S-1", "임시 비밀번호 발급" , member.getMemberEmail() + "로 임시 비밀번호를 발급 했습니다.", "success");
-		return result;
-	}
-
-	@Override
 	public void changePassword(Map<String, Object> param) {
 		
 		String key = (String) param.get("key");
@@ -299,4 +167,47 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.changePassword(param);
 	}
 
+	@Override
+	public Map<String, Object> doLoginCheck(Map<String, Object> param) {
+		String memberName = (String) param.get("memberName");
+		String memberPw = (String) param.get("memberPw");
+		
+		if(memberName != null) {
+			memberName = memberName.trim();
+		}
+		
+		if(memberPw != null) {
+			memberPw = memberPw.trim();
+		}
+		
+		MemberVO member = getMemberByMemberName(memberName);
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		if(memberName == null) {
+			result = Util.MapResultAlert("F-1", "아이디 미입력", "아이디를 입력해주세요.", "error");
+			return result;
+		} else if(memberPw == null) {
+			result = Util.MapResultAlert("F-2", "패스워드 미입력", "패스워드를 입력해주세요.", "error");
+			return result;
+		}
+		
+		if(member == null) {
+			result = Util.MapResultAlert("F-3", "회원 정보 없음", "입력하신 정보와 일치하는 회원이 없습니다.", "error");
+			return result;
+		}
+		
+		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder(10);
+
+		boolean loginPwCheck = pwEncoder.matches(memberPw, member.getMemberPw());
+		
+		if( loginPwCheck == false ) {
+			result = Util.MapResultAlert("F-4", "비밀번호 불일치", "비밀번호가 일치하지 않습니다.", "error");
+			return result;
+		}
+		
+		result = Util.MapResultAlert("S-1", "로그인", "로그인 되었습니다.", "success");
+		
+		return result;
+	}
 }

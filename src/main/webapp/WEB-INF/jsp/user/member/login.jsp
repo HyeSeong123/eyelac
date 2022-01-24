@@ -24,7 +24,7 @@
 	let nextStep = false;
 	function checkLoginForm(){
 		let frm = document.getElementById('loginForm');
-		let memberId = frm.memberId.value;
+		let memberName = frm.memberName.value;
 		let memberPw = frm.memberPw.value;
 		
 		if (nextStep) {
@@ -32,9 +32,9 @@
 			return;
 		}
 		
-		if(memberId.length < 1){
-			sweetAlert('아이디 미입력','아이디를 입력해주세요','error', frm.memberId);
-			frm.memberId.focus();
+		if(memberName.length < 1){
+			sweetAlert('이름 미입력','이름을 입력해주세요','error', frm.memberName);
+			frm.memberName.focus();
 			return;
 		} else if(memberPw.length < 1){
 			sweetAlert('패스워드 미입력','패스워드를 입력해주세요','error', frm.memberPw);
@@ -47,7 +47,7 @@
 			
 			var xhr = new XMLHttpRequest();
 			
-			xhr.open('POST', '/user/member/doLogin.do?ajax=true&memberId=' + memberId + "&memberPw=" + memberPw,true);
+			xhr.open('POST', '/user/member/doLogin.do?ajax=true&memberName=' + memberName + "&memberPw=" + memberPw,true);
 			xhr.responseType = 'json';
 			
 			xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -59,9 +59,9 @@
 					let result = xhr.response;
 					let resultVal = result.result; 
 					console.log(result);
-					
+					console.log(resultVal);
 					if ( resultVal.resultCode.includes("F-") ){
-						sweetAlert(resultVal.alertTitle,resultVal.alertMsg,resultVal.alertIcon, frm.memberId);
+						sweetAlert(resultVal.alertTitle,resultVal.alertMsg,resultVal.alertIcon, frm.memberName);
 						nextStep = false;	
 					}	else if (resultVal.resultCode.includes("S-") ) {
 						swal({
@@ -94,8 +94,8 @@
 				<div class="box_input">
 					<div class="box_input_input">
 						<div class="id_input">
-							<span>아이디</span>
-							<input type="text" name="memberId" placeholder="아이디">
+							<span>성함</span>
+							<input type="text" name="memberName" placeholder="성함">
 						</div>
 						
 						<div class="pw_input">
@@ -114,7 +114,7 @@
 				
 					<div class="">
 						<input type="checkbox" name="remember" id="remember">
-						<label for="remember">아이디 저장</label>
+						<label for="remember">자동 로그인</label>
 					</div>
 					
 					<div class="">
@@ -122,7 +122,7 @@
 					</div>
 					
 					<div class="">
-						<button type="button" onclick="movePage('/user/member/memberFindId.do?afterLoginURI=${param.afterLoginURI}'); return false;">ID/PW 찾기</button>
+						<button type="button" onclick="movePage('/user/member/memberFindPw.do?afterLoginURI=${param.afterLoginURI}'); return false;">PW 찾기</button>
 					</div>
 				</section>
 			</form>

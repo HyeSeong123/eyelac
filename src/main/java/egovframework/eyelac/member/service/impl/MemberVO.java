@@ -7,22 +7,17 @@ public class MemberVO {
 	private String regDate;
 	private String updateDate;
 	private String memberName;
-	private String memberId;
 	@JsonIgnore
 	private String memberPw;
 	private String memberBirth;
 	@JsonIgnore
-	private String memberPostcode;
-	@JsonIgnore
 	private String memberAddress;
-	private String memberNickname;
-	private String memberEmail;
 	private String memberGender;
 	@JsonIgnore
 	private String memberPhNum;
 	private String memberLevel;
 	private String mailAgree;
-	private String emailAgree;
+	
 	public int getId() {
 		return id;
 	}
@@ -47,12 +42,6 @@ public class MemberVO {
 	public void setMemberName(String memberName) {
 		this.memberName = memberName;
 	}
-	public String getMemberId() {
-		return memberId;
-	}
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
-	}
 	public String getMemberPw() {
 		return memberPw;
 	}
@@ -65,29 +54,11 @@ public class MemberVO {
 	public void setMemberBirth(String memberBirth) {
 		this.memberBirth = memberBirth;
 	}
-	public String getMemberPostcode() {
-		return memberPostcode;
-	}
-	public void setMemberPostcode(String memberPostcode) {
-		this.memberPostcode = memberPostcode;
-	}
 	public String getMemberAddress() {
 		return memberAddress;
 	}
 	public void setMemberAddress(String memberAddress) {
 		this.memberAddress = memberAddress;
-	}
-	public String getMemberNickname() {
-		return memberNickname;
-	}
-	public void setMemberNickname(String memberNickname) {
-		this.memberNickname = memberNickname;
-	}
-	public String getMemberEmail() {
-		return memberEmail;
-	}
-	public void setMemberEmail(String memberEmail) {
-		this.memberEmail = memberEmail;
 	}
 	public String getMemberGender() {
 		return memberGender;
@@ -113,10 +84,5 @@ public class MemberVO {
 	public void setMailAgree(String mailAgree) {
 		this.mailAgree = mailAgree;
 	}
-	public String getEmailAgree() {
-		return emailAgree;
-	}
-	public void setEmailAgree(String emailAgree) {
-		this.emailAgree = emailAgree;
-	}
+	
 }

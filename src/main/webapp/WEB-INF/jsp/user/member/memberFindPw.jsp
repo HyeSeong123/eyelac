@@ -19,8 +19,8 @@
 	function chekcFindLoginPw(){
 		let frm = document.getElementById('findPwForm');
 		
-		if(frm.memberId.value.length < 1){
-			sweetAlert('아이디 미입력','아이디를 입력해주세요.','error',frm.memberId);
+		if(frm.memberName.value.length < 1){
+			sweetAlert('아이디 미입력','아이디를 입력해주세요.','error',frm.memberName);
 			return;
 		} else if (frm.memberBirth.value.length < 1){
 			sweetAlert('생년월일 미입력','생년월일을 입력해주세요.','error',frm.memberBirth);
@@ -33,13 +33,13 @@
 		nextStep = true;
 		
 		if( nextStep ){
-			let memberId = frm.memberId.value.trim();
+			let memberName = frm.memberName.value.trim();
 			let memberBirth = frm.memberBirth.value.trim();
 			let memberEmail = frm.memberEmail.value.trim();
 			
 			var xhr = new XMLHttpRequest();
 			
-			xhr.open('POST', '/user/member/doFindPw.do?ajax=true&memberId=' + memberId + "&memberBirth=" + memberBirth + "&memberEmail=" +memberEmail ,true);
+			xhr.open('POST', '/user/member/doFindPw.do?ajax=true&memberName=' + memberName + "&memberBirth=" + memberBirth + "&memberEmail=" +memberEmail ,true);
 			
 			xhr.responseType = 'json';
 			
@@ -53,13 +53,13 @@
 					let result = resultVal.result;
 					
 					if ( result.resultCode.includes("F-") ){
-						sweetAlert(result.alertTitle, result.alertMsg, result.alertIcon, frm.memberId);
+						sweetAlert(result.alertTitle, result.alertMsg, result.alertIcon, frm.memberName);
 					} else if ( result.resultCode.includes("S-") ){
 						sweetAlert(result.alertTitle, result.alertMsg, result.alertIcon, frm.certificationInput);
 						
 						var xhr2 = new XMLHttpRequest();
 						
-						xhr2.open('POST', '/user/email/emailCheck.do?ajax=true&email=' +memberEmail + "&memberId=" + memberId + "&memberBirth=" + memberBirth ,true);
+						xhr2.open('POST', '/user/email/emailCheck.do?ajax=true&email=' +memberEmail + "&memberName=" + memberName + "&memberBirth=" + memberBirth ,true);
 						 
 						xhr2.responseType = 'json';
 						
@@ -96,8 +96,8 @@
 				<div class="box_input">
 					<div class="box_input_input">
 						<div class="name_input">
-							<span>아이디</span>
-							<input type="text" name="memberId" id="memberId" placeholder="아이디">
+							<span>성함</span>
+							<input type="text" name="memberName" id="memberName" placeholder="성함">
 						</div>
 						
 						<div class="birth_input">
@@ -105,10 +105,16 @@
 							<input autocomplete="off" class="" id="datepicker" type="text" name="memberBirth" placeholder="생년월일">
 						</div>
 						
+						<div class="phNum_input">
+							<span>전화번호</span>
+							<input class="" type="text" name="memberPhoneNumber" id="memberPhoneNumber" placeholder="휴대전화 번호">
+						</div>
+						
 						<div class="email_input">
 							<span>이메일</span>
 							<input class="" type="email" name="memberEmail" id="memberEmail" placeholder="이메일">
 						</div>
+						
 					</div>
 					
 					<div class="login_btn">
@@ -119,10 +125,6 @@
 				<section class="buttonBox">
 					<div class="">
 						<button onclick="fn_pageMove('/user/member/login.do?afterLoginURI=${param.afterLoginURI}'); return false;">로그인</button>
-					</div>
-					
-					<div class="">
-						<button onclick="movePage('/user/member/memberFindId.do'); return false;">아이디 찾기</button>
 					</div>
 				</section>
 			</form>

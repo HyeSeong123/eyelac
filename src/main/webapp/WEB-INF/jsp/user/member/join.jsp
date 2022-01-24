@@ -57,6 +57,9 @@
 		let memberPw = document.getElementById("memberPw");
 		let memberPwConfirm = document.getElementById("memberPwConfirm");
 		let birth = document.getElementById("memberBirth")
+		let area1 = document.querySelector('.area1');
+		let area2 = document.querySelector('.area2');
+		let area3 = document.querySelector('.area3');
 		
 		let nameReg = /^[가-힣]{2,13}$/;
 		let phoneNumberReg = /^\d{3}\d{4}\d{4}$/;
@@ -79,7 +82,17 @@
 		} else if( ! birthReg.test(memberBirth.value.trim()) ) {
 			sweetAlert('생년월일 양식','생일의 양식을 맞춰서 입력 해주세요', 'error', memberBirth);
 			return;
+		} else if ( area1.value == null || area1.value == "null"){
+			sweetAlert('주소 미입력','주소를 입력해주세요.', 'error', area1);
+			return;
+		} else if ( area2.value == null || area2.value == "null"){
+			sweetAlert('주소 미입력','주소를 입력해주세요.', 'error', area2);
+			return;
+		} else if ( area3.value == null || area3.value == "null"){
+			sweetAlert('주소 미입력','주소를 입력해주세요.', 'error', area3);
+			return;
 		}
+		
 		nextStep = true;
 		
 		if(nextStep){
@@ -131,11 +144,11 @@
 					areaList.push([area.area2]);
 				})
 				
-				console.log(areaList);
-				
 				let selectList = document.querySelector(".area2");
+				let selectList2 = document.querySelector(".area3");
 				
 				selectList.options.length = 1;
+				selectList2.options.length = 1;
 				
 				for (var i = 0; i < areaList.length; i++) {
 				    let option = document.createElement("option");
@@ -176,8 +189,6 @@ function selectArea2(){
 				result.forEach((area) => {
 					areaList.push([area.area3]);
 				})
-				
-				console.log(areaList);
 				
 				let selectList = document.querySelector(".area3");
 				
@@ -257,7 +268,7 @@ function selectArea2(){
 						<td class="join_address_td">
 							<div class="join_address">
 								<select name="area1" onChange="selectArea();" class="area1">
-								  <option>- 지역 선택 -</option>
+								  <option value='null'> - 지역 선택 -</option>
 								  <option value='서울특별시'>서울</option>
 								  <option value='부산광역시'>부산</option>
 								  <option value='대구광역시'>대구</option>
@@ -268,21 +279,21 @@ function selectArea2(){
 								  <option value='세종특별자치시'>세종</option>
 								  <option value='경기도'>경기</option>
 								  <option value='강원도'>강원</option>
-								  <option value='충북'>충북</option>
-								  <option value='충남'>충남</option>
-								  <option value='전북' >전북</option>
-								  <option value='전남'>전남</option>
-								  <option value='경북'>경북</option>
-								  <option value='경남'>경남</option>
+								  <option value='충청북도'>충북</option>
+								  <option value='충청남도'>충남</option>
+								  <option value='전라북도' >전북</option>
+								  <option value='전라남도'>전남</option>
+								  <option value='경상북도'>경북</option>
+								  <option value='경상남도'>경남</option>
 								  <option value='제주특별자치도'>제주</option>
 								</select>
 								
 								<select name="area2" onChange="selectArea2();" class="area2">
-								  <option>- 시/군/구 선택 -</option>
+								  <option value='null'>- 시/군/구 선택 -</option>
 								</select>
 								
-								<select name="area3" onChange="selectArea3();" class="area3">
-								  <option>- 읍/내/동 선택 -</option>
+								<select name="area3" class="area3">
+								  <option value='null'>- 읍/내/동 선택 -</option>
 								</select>
 							</div>
 							

@@ -7,161 +7,27 @@
 		<result property="regDate" column="regDate" />
 		<result property="updateDate" column="updateDate" />
 		<result property="memberName" column="memberName" />
-		<result property="memberId" column="memberId" />
 		<result property="memberPw" column="memberPw" />
 		<result property="memberBirth" column="memberBirth" />
-		<result property="memberPostcode" column="memberPostcode" />
 		<result property="memberAddress" column="memberAddress" />
-		<result property="memberNickname" column="memberNickname" />
-		<result property="memberEmail" column="memberEmail" />
 		<result property="memberPhNum" column="memberPhNum" />
 		<result property="memberLevel" column="memberLevel" />
 		<result property="mailAgree" column="mailAgree" />
-		<result property="emailAgree" column="emailAgree" />
 	</resultMap>
-	
-	<select id="getMemberByMemberId" resultMap="memberMap">
-		SELECT id,
-		regDate,
-		updateDate,
-		memberName,
-		memberId,
-		memberPw,
-		memberNickname,
-		memberEmail,
-		memberPostcode,
-		memberAddress,
-		memberGender,
-		memberPhNum,
-		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
-		memberLevel
-		FROM `member`
-		WHERE memberId = #{memberId}
-	</select>
-
-	<select id="getMemberByMemberNames" resultMap="memberMap">
-		SELECT id,
-		regDate,
-		updateDate,
-		memberName,
-		memberId,
-		memberPw,
-		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
-		memberNickname,
-		memberEmail,
-		memberPostcode,
-		memberAddress,
-		memberGender,
-		memberPhNum,
-		memberLevel
-		FROM `member`
-		WHERE memberName = #{memberName}
-	</select>
 	
 	<select id="getMemberByMemberName" resultMap="memberMap" parameterType="String">
 		SELECT id,
 		regDate,
 		updateDate,
 		memberName,
-		memberId,
 		memberPw,
 		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
-		memberNickname,
-		memberEmail,
-		memberPostcode,
 		memberAddress,
 		memberGender,
 		memberPhNum,
 		memberLevel
 		FROM `member`
 		WHERE memberName = #{memberName}
-	</select>
-	
-	<select id="getMemberByMemberNameAndEmail" resultMap="memberMap">
-		SELECT id,
-		regDate,
-		updateDate,
-		memberName,
-		memberId,
-		memberPw,
-		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
-		memberNickname,
-		memberEmail,
-		memberPostcode,
-		memberAddress,
-		memberGender,
-		memberPhNum,
-		memberLevel
-		FROM `member`
-		WHERE memberName = #{memberName}
-		AND memberEmail = #{memberEmail}
-	</select>
-	
-	<select id="getMemberByMemberNameAndEmailAndPhNum" resultMap="memberMap">
-		SELECT id,
-		regDate,
-		updateDate,
-		memberName,
-		memberId,
-		memberPw,
-		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
-		memberNickname,
-		memberEmail,
-		memberPostcode,
-		memberAddress,
-		memberGender,
-		memberPhNum,
-		memberLevel
-		FROM `member`
-		WHERE memberName = #{memberName}
-		AND memberEmail = #{memberEmail}
-		OR memberPhNum = #{memberPhNum}
-	</select>
-	
-	<select id="getMemberByIdAndEmailAndBirth" resultMap="memberMap">
-		SELECT id,
-		regDate,
-		updateDate,
-		memberName,
-		memberId,
-		memberPw,
-		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
-		memberNickname,
-		memberEmail,
-		memberPostcode,
-		memberAddress,
-		memberGender,
-		memberPhNum,
-		memberLevel
-		FROM `member`
-		WHERE memberId = TRIM(#{memberId})
-		AND memberEmail = #{memberEmail}
-		AND memberBirth = DATE_FORMAT(#{memberBirth},'%Y-%m-%d')
-	</select>
-	
-	<select id="getMemberByMemberNickname" resultMap="memberMap">
-		SELECT id,
-		regDate,
-		updateDate,
-		memberName,
-		memberId,
-		memberPw,
-		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
-		memberNickname,
-		memberEmail,
-		memberPostcode,
-		memberAddress,
-		memberGender,
-		memberPhNum,
-		memberLevel
-		FROM `member`
-		WHERE memberNickname = #{memberNickname}
-	</select>
-	
-	<select id="getMemberByMemberEmailCount" resultType="int">
-		SELECT COUNT(*)
-		FROM `member`
-		WHERE memberEmail = #{memberName}
 	</select>
 	
 	<insert id="doJoin" useGeneratedKeys="true" keyProperty="id" parameterType="map">
@@ -170,67 +36,29 @@
 			regDate = NOW(),
 			updateDate = NOW(),
 			memberName = #{memberName},
-			memberId = #{memberId},
 			memberPw = #{memberPw},
 			memberBirth = #{memberBirth},
-			memberPostcode = #{memberPostCode},
 			memberAddress = #{memberAddress},
 			memberGender = #{gender},
-			memberEmail = #{memberEmail},
 			memberPhNum = #{memberPhoneNumber},
 			mailAgree = #{SMSAgree},
-			emailAgree = #{emailAgree},
 			<if test="memberLevel != null">
 				memberLevel = #{memberLevel},
 			</if>
 		</set>
 	</insert>
 	
-	<select id="doLoginCheck" resultMap="memberMap">
+	<select id="getMemberDupCheck" resultMap="memberMap" parameterType="String">
 		SELECT id,
 		regDate,
 		updateDate,
 		memberName,
-		memberId,
-		memberPw,
-		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
-		memberBirth,
-		memberNickname,
-		memberEmail,
-		memberPostcode,
 		memberAddress,
 		memberGender,
-		memberPhNum,
-		memberLevel
+		memberPhNum
 		FROM `member`
-		WHERE memberId = #{memberId}
+		WHERE memberName = #{memberName}
+		AND memberPhNum = #{memberPhoneNumber}
 	</select>
-	
-	<select id="getMemberById" resultMap="memberMap" parameterType="int">
-		SELECT id,
-		regDate,
-		updateDate,
-		memberName,
-		memberId,
-		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
-		memberBirth,
-		memberNickname,
-		memberEmail,
-		memberPostcode,
-		memberAddress,
-		memberGender,
-		memberPhNum,
-		memberLevel
-		FROM `member`
-		WHERE id = #{changeMemberId}
-	</select>
-	
-	<update id="changePassword" parameterType="map">
-		UPDATE `member`
-		SET memberPw = #{key}
-		WHERE memberId = #{memberId}
-		AND memberEmail = #{email}
-		AND memberBirth = #{memberBirth}
-	</update>
 	
 </mapper>

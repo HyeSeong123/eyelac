@@ -13,6 +13,9 @@
 	<input type="hidden" name="requestURI" value="${requestURI}">
 </form>
 
+<c:if test="${loginedMember.getPwStatus() != change}">
+	<div class="changePwMember">임시 비밀번호를 발급 받으신 상태 입니다. 비밀번호를 변경해주세요. <a href="/user/member/identification.do">비밀번호 변경하러 가기</a></div>
+</c:if>
 <header>
 	<section class="header_container height-100p">
 		<section class="header_min_container height-100p">
@@ -69,7 +72,7 @@
 								<a href="/user/member/logout.do?afterLoginURI=${requestURI}" class=""><i class="fas fa-lock-open"></i></a>
 							</li>
 							<li>
-								<a href="/user/member/myInfor.do?" class=""><i class="fas fa-user"></i></a>
+								<a href="javascript:openIdentification();" class=""><i class="fas fa-user"></i></a>
 							</li>
 						</c:if>
 					</ul>

@@ -18,4 +18,7 @@ public interface MemberMapper {
 	MemberVO getMemberDupCheck(Map<String, Object> param);
 
 	Map<String, Object> doLoginCheck(Map<String, Object> param);
+
+	MemberVO getMemberByNameAndBirthAndPhoneNumberAndEmail(Map<String, Object> param);
+
 }

@@ -1947,7 +1947,7 @@ header{
     width: 65%;
     border-top: 2px solid black;
     position: absolute;
-    top: 10%;
+    top: 8%;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -1974,6 +1974,9 @@ header{
 	justify-content: center;
 }
 .findPw_box .birth_input {
+	margin-bottom : 15px;
+}
+.findPw_box .phNum_input {
 	margin-bottom : 15px;
 }
 .findPw_container {
@@ -2075,50 +2078,41 @@ header{
 	.findPw_container::after{
 		width : 100%;
 	}
+	.findPw_container::after {
+		top: 0;
+		display : none;
+	}
+	.findPw_container::before {
+		bottom : 0;
+		display : none;
+	}
 }
-@media (max-width : 414px) and (max-height : 896px){
+@media (max-width : 820px) and (max-height : 1180px){
 	.findPw_container::after{
-		top : 6%;
+		top : 20%;
 	}
 	.findPw_container::before{
-		bottom : 8%;
+		bottom : 20%;
 	}
 }
-@media (max-width : 390px) and (max-height : 844px){
+@media (max-width : 768px) and (max-height : 1024px){
 	.findPw_container::after{
-		top : 6%;
+		top : 15%;
 	}
 	.findPw_container::before{
-		bottom : 6%;
+		bottom : 18%;
 	}
 }
-
-@media (max-width : 375px) and (max-height : 667px){
-	.findPw_container::after{
-		top : 4%;
+@media (max-height : 800px){
+	.findPw_container::after {
+		top: 0;
+		display : none;
 	}
-	.findPw_container::before{
-		bottom : 6%;
-	}
-}
-@media (max-width : 360px) and (max-height : 740px){
-	.findPw_container::after{
-		top : 6%;
-	}
-	.findPw_container::before{
-		bottom : 9%;
+	.findPw_container::before {
+		bottom : 0;
+		display : none;
 	}
 }
-
-@media (max-width : 280px){
-	.findPw_container::after{
-		top : 3%;
-	}
-	.findPw_container::before{
-		bottom : 5%;
-	}
-}
-
 /* 패스워드 찾기 화면 끝 */
 /* 푸터 시작 */
 .footer{

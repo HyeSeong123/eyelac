@@ -93,3 +93,11 @@ table tr td{
 .text-right{
 	text-align: right;
 }
+.changePwMember{
+	background-color : #d1deff;
+	font-family: 'BMJUA';
+	text-align : center;
+}
+.changePwMember > a{
+	margin-left : 25px;
+}

@@ -63,35 +63,35 @@
 		
 		let nameReg = /^[가-힣]{2,13}$/;
 		let phoneNumberReg = /^\d{3}\d{4}\d{4}$/;
-		let birthReg = /^([0-9]{4})-?([0-9]{2})-?([0-9]{2})$/;
+		let birthReg = /^([0-9]{4})-\d([0-9]{2})-\d([0-9]{2})$/;
 		
-		if( ! nameReg.test(memberName.value.trim()) ) {
-			sweetAlert('이름 입력 오류', '이름을 두 글자 이상 13글자 이하로 입력해주세요' ,"error", memberName);
-			return;
-		} else if ( isGenderCheck == false ){
-			swal('성별 체크', '성별을 체크해주세요.', 'error');
-			return;
-		} else if( ! phoneNumberReg.test(memberPhoneNumber.value.trim()) ) {
-			sweetAlert('전화번호 입력 오류', '휴대전화 번호 양식을 지켜주세요.(- 제외)', "error", memberPhoneNumber);
-			return;
-		} else if( memberPw.value.trim().length < 3 ) {
-			sweetAlert('패스워드 에러', '비밀번호를 4글자 이상으로 입력해주세요.', 'error', memberPw);
-			return;
-		} else if ( memberPw.value != memberPwConfirm.value ){
-			sweetAlert('비밀번호 불일치','비밀번호와 비밀번호확인이 일치하지 않습니다', 'error', memberPwConfirm);
-		} else if( ! birthReg.test(memberBirth.value.trim()) ) {
-			sweetAlert('생년월일 양식','생일의 양식을 맞춰서 입력 해주세요', 'error', memberBirth);
-			return;
-		} else if ( area1.value == null || area1.value == "null"){
-			sweetAlert('주소 미입력','주소를 입력해주세요.', 'error', area1);
-			return;
-		} else if ( area2.value == null || area2.value == "null"){
-			sweetAlert('주소 미입력','주소를 입력해주세요.', 'error', area2);
-			return;
-		} else if ( area3.value == null || area3.value == "null"){
-			sweetAlert('주소 미입력','주소를 입력해주세요.', 'error', area3);
-			return;
-		}
+// 		if( ! nameReg.test(memberName.value.trim()) ) {
+// 			sweetAlert('이름 입력 오류', '이름을 두 글자 이상 13글자 이하로 입력해주세요' ,"error", memberName);
+// 			return;
+// 		} else if ( isGenderCheck == false ){
+// 			swal('성별 체크', '성별을 체크해주세요.', 'error');
+// 			return;
+// 		} else if( ! phoneNumberReg.test(memberPhoneNumber.value.trim()) ) {
+// 			sweetAlert('전화번호 입력 오류', '휴대전화 번호 양식을 지켜주세요.(- 제외)', "error", memberPhoneNumber);
+// 			return;
+// 		} else if( memberPw.value.trim().length < 3 ) {
+// 			sweetAlert('패스워드 에러', '비밀번호를 4글자 이상으로 입력해주세요.', 'error', memberPw);
+// 			return;
+// 		} else if ( memberPw.value != memberPwConfirm.value ){
+// 			sweetAlert('비밀번호 불일치','비밀번호와 비밀번호확인이 일치하지 않습니다', 'error', memberPwConfirm);
+// 		} else if( ! birthReg.test(memberBirth.value.trim()) ) {
+// 			sweetAlert('생년월일 양식','생일의 양식을 맞춰서 입력 해주세요', 'error', memberBirth);
+// 			return;
+// 		} else if ( area1.value == null || area1.value == "null"){
+// 			sweetAlert('주소 미입력','주소를 입력해주세요.', 'error', area1);
+// 			return;
+// 		} else if ( area2.value == null || area2.value == "null"){
+// 			sweetAlert('주소 미입력','주소를 입력해주세요.', 'error', area2);
+// 			return;
+// 		} else if ( area3.value == null || area3.value == "null"){
+// 			sweetAlert('주소 미입력','주소를 입력해주세요.', 'error', area3);
+// 			return;
+// 		}
 		
 		nextStep = true;
 		
@@ -248,7 +248,10 @@ function selectArea2(){
 							<input type="password" name="memberPw" id="memberPw">
 							<span class="open_password" style="cursor:pointer" onclick="changeActive();"><i class="far fa-eye"></i></span>
 						</td>
-						<td><span>영문 및 숫자 특수문자<div class="mobile_display_block"></div>(6~17)</span></td>
+						<td>
+							<span>영문 4글자 이상</span>
+							<span id="inputPwSpanMsg"></span>
+						</td>
 					</tr>
 					<tr>
 						<th><span>비밀번호<div class="mobile_display_block"></div>확인</span></th>
@@ -256,7 +259,7 @@ function selectArea2(){
 							<input type="password" name="memberPwConfirm" id="memberPwConfirm">
 							<span class="open_password" style="cursor:pointer" onclick="changeActive();"><i class="far fa-eye"></i></span>
 						</td>
-						<td id="pwConfirm_txt"><span id="inputSpanMsg"></span></td>
+						<td id="pwConfirm_txt"><span id="inputPwConfirmSpanMsg"></span></td>
 					</tr>
 					<tr>
 						<th><span>생년월일</span></th>
@@ -327,12 +330,26 @@ function selectArea2(){
 	let pwConfirm = document.getElementById('memberPwConfirm');
 	let pw = document.getElementById('memberPw');
 	
+	pw.addEventListener('keyup', e => {
+		let inputError = document.getElementById('inputPwSpanMsg');
+		setTimeout(function(){
+			if ( pw.value.trim().length < 4){
+				inputError.className = 'errorMsg';
+				inputError.innerHTML = '4글자 이상 입력해주세요.';
+			} else {
+				inputError.className.remove = 'errorMsg';
+				inputError.innerHTML = '';
+			}
+		},250);
+	})
+	
 	pwConfirm.addEventListener('keyup', e => {
 		setTimeout(function(){
+			
 			if ( pw.value.trim() != pwConfirm.value.trim() ){
 				let pwConfirmSpan = document.getElementById('pwConfirm_txt');
 				
-				let inputError = document.getElementById('inputSpanMsg');
+				let inputError = document.getElementById('inputPwConfirmSpanMsg');
 				
 				inputError.className = 'errorMsg';
 				
@@ -341,8 +358,8 @@ function selectArea2(){
 			} else if (pw.value.trim() == pwConfirm.value.trim() ){
 				let pwConfirmSpan = document.getElementById('pwConfirm_txt');
 				
-				let inputError = document.getElementById('inputSpanMsg');
-				
+				let inputError = document.getElementById('inputPwConfirmSpanMsg');
+				inputError.className.remove = 'errorMsg';
 				inputError.className = 'successMsg';
 				
 				inputError.innerHTML = '비밀번호와 일치합니다.';

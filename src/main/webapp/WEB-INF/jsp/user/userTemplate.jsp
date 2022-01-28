@@ -43,6 +43,7 @@
 	<tiles:insertAttribute name="userHeader" />
 	
 	<section>
+		<div class="identPopupBox"></div>
 		<tiles:insertAttribute name="userContents" />
 	</section>
 	

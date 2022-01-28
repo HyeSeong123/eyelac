@@ -58,8 +58,7 @@
 				if (xhr.status == 200){
 					let result = xhr.response;
 					let resultVal = result.result; 
-					console.log(result);
-					console.log(resultVal);
+					
 					if ( resultVal.resultCode.includes("F-") ){
 						sweetAlert(resultVal.alertTitle,resultVal.alertMsg,resultVal.alertIcon, frm.memberName);
 						nextStep = false;	

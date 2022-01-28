@@ -42,12 +42,13 @@ public class EmailController {
 		
 		String setFrom = "banggu1997@gmail.com";
 		String key = new TempKey().getKey(8);
-		String toMail = (String) param.get("email");
+		String toMail = (String) param.get("memberEmail");
 		
 		logger.debug("param=" + param);
 		
-		String title = "아일락 메일 인증 서비스 입니다.";
-		String content = new StringBuffer().append("임시비밀번호 : ").append(key).toString();
+		String title = "(아일락) 임시 비밀번호가 발송 되었습니다.";
+		String content = new StringBuffer().append("임시비밀번호 입니다.<br/>")
+				.append("임시비밀번호 : ").append(key).toString();
 		
 		try {
 			res.setContentType("UTF-8");
@@ -68,7 +69,7 @@ public class EmailController {
 			mailSender.send(message);
 			
 			param.put("key", key);
-			memberService.changePassword(param);
+			memberService.doChangePassword(param);
 			
 		} catch(Exception e) {
 			logger.info("에러=" + e);

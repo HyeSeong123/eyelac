@@ -161,3 +161,7 @@ function sweetAlert(title, text, icon, inputName){
 		inputName.focus();
 	})
 }
+
+function openIdentification(){
+	
+}

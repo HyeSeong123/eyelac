@@ -17,6 +17,7 @@ public class MemberVO {
 	private String memberPhNum;
 	private String memberLevel;
 	private String mailAgree;
+	private String pwStatus;
 	
 	public int getId() {
 		return id;
@@ -83,6 +84,12 @@ public class MemberVO {
 	}
 	public void setMailAgree(String mailAgree) {
 		this.mailAgree = mailAgree;
+	}
+	public String getPwStatus() {
+		return pwStatus;
+	}
+	public void setPwStatus(String pwStatus) {
+		this.pwStatus = pwStatus;
 	}
 	
 }

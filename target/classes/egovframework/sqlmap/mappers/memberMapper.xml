@@ -10,9 +10,11 @@
 		<result property="memberPw" column="memberPw" />
 		<result property="memberBirth" column="memberBirth" />
 		<result property="memberAddress" column="memberAddress" />
+		<result property="memberGender" column="memberGender" />
 		<result property="memberPhNum" column="memberPhNum" />
 		<result property="memberLevel" column="memberLevel" />
 		<result property="mailAgree" column="mailAgree" />
+		<result property="pwStatus" column="pwStatus" />
 	</resultMap>
 	
 	<select id="getMemberByMemberName" resultMap="memberMap" parameterType="String">
@@ -25,7 +27,8 @@
 		memberAddress,
 		memberGender,
 		memberPhNum,
-		memberLevel
+		memberLevel,
+		pwStatus
 		FROM `member`
 		WHERE memberName = #{memberName}
 	</select>
@@ -60,5 +63,31 @@
 		WHERE memberName = #{memberName}
 		AND memberPhNum = #{memberPhoneNumber}
 	</select>
+	
+	<select id="getMemberByNameAndBirthAndPhoneNumberAndEmail" resultMap="memberMap" parameterType="map">
+		SELECT id,
+		regDate,
+		updateDate,
+		memberName,
+		memberPw,
+		DATE_FORMAT(memberBirth, '%Y-%m-%d') AS memberBirth,
+		memberAddress,
+		memberGender,
+		memberPhNum,
+		memberLevel,
+		pwStatus
+		FROM `member`
+		WHERE memberName = #{memberName}
+		AND memberBirth = #{memberBirth}
+		AND memberPhNum = #{memberPhNum}
+	</select>
+	
+	<update id="changePassword" parameterType="map">
+		UPDATE `member`
+		SET memberPw = #{key}, pwStatus = 'change'
+		WHERE memberName = #{memberName}
+		AND memberBirth = #{memberBirth}
+		AND memberPhNum = #{memberPhNum}
+	</update>
 	
 </mapper>

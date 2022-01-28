@@ -193,17 +193,24 @@ public class MemberController {
 		
 		ModelAndView mav = new ModelAndView();
 		
+		Map<String, Object> result = new HashMap<>();
+		
+		result = memberService.ChangePw(param);
+		
+		mav.addObject("result", result);
+		
+		logger.debug("result= " + result);
+		
 		mav.setView(jsonView);
 		return mav;
 	}
 	
-	@RequestMapping("/user/member/myInforBeforePage.do")
+	@RequestMapping("/user/member/identification.do")
     public ModelAndView showMyInforBeforePage(HttpServletRequest req, HttpSession session, @RequestParam Map<String,Object> param, String afterLoginURI) throws Exception {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		mav.setViewName("/member/myInforBeforePage");
-		
+		mav.setViewName("/user/member/identification.user");
 		return mav; 
     }	
 }

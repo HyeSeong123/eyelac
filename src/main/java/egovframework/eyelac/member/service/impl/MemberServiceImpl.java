@@ -2,6 +2,7 @@ package egovframework.eyelac.member.service.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
@@ -61,6 +62,9 @@ public class MemberServiceImpl implements MemberService {
 		
 		Map<String,Object> result = new HashMap<>();
 		
+		String area1 = (String) param.get("area1");
+		String area2 = (String) param.get("area2");
+		String area3 = (String) param.get("area3");
 		String memberName = (String) param.get("memberName");
 		String memberPhoneNumber = (String) param.get("memberPhoneNumber");
 		String memberPw = (String) param.get("memberPw");
@@ -68,14 +72,19 @@ public class MemberServiceImpl implements MemberService {
 		String memberBirth = (String) param.get("memberBirth");
 		String gender = (String) param.get("gender");
 		
+		
+		
 		memberPhoneNumber.replaceAll("-", "");
 		memberPhoneNumber.replaceAll(" ", "");
 		
 		if(memberName == null || memberName.equals("") ) {
 			result = Util.MapResultAlert("F-1", "성명 미입력", "성명을 입력해주세요", "error");
 			return result;
+		} else if(gender == null || gender.equals("")) {
+			result = Util.MapResultAlert("F-2", "성별 미입력", "성별을 입력해주세요", "error");
+			return result;
 		} else if(memberPhoneNumber == null || memberPhoneNumber.equals("")) {
-			result = Util.MapResultAlert("F-2", "전화번호 미입력", "휴대폰 번호를 입력해주세요", "error");
+			result = Util.MapResultAlert("F-3", "전화번호 미입력", "휴대폰 번호를 입력해주세요", "error");
 			return result;
 		} else if(memberPw == null || memberPw.equals("")) {
 			result = Util.MapResultAlert("F-4", "패스워드 미입력", "패스워드를 입력해주세요", "error");
@@ -84,24 +93,34 @@ public class MemberServiceImpl implements MemberService {
 			result = Util.MapResultAlert("F-5", "패스워드 확인 미입력", "패스워드 확인을 입력해주세요", "error");
 			return result;
 		} else if(memberBirth == null || memberBirth.equals("")) {
-			result = Util.MapResultAlert("F-7", "생년월일 미입력", "생년월일을 입력해주세요", "error");
+			result = Util.MapResultAlert("F-6", "생년월일 미입력", "생년월일을 입력해주세요", "error");
 			return result;
-		} else if(gender == null || gender.equals("")) {
-			result = Util.MapResultAlert("F-10", "성별 미입력", "성별을 입력해주세요", "success");
+		} else if(area1 == null || area1.equals("null")) {
+			result = Util.MapResultAlert("F-7", "지역 미입력", "지역을 입력해주세요", "error");
+			return result;
+		} else if(area2 == null || area2.equals("null")) {
+			result = Util.MapResultAlert("F-8", "시/군/구 미입력", "시/군/구를 입력해주세요", "error");
+			return result;
+		} else if(area3 == null || area3.equals("null")) {
+			result = Util.MapResultAlert("F-9", "읍/내/동 미입력", "읍/내/동을 입력해주세요", "error");
 			return result;
 		}
 		
 		boolean isName = memberName.matches("^[a-zA-Z가-힣]*$");
-		boolean isPhoneNumber = memberPhoneNumber.matches("\\d{11}");
+		boolean isPhoneNumber = memberPhoneNumber.matches("^\\d{11}$");
+		boolean isBirth = memberBirth.matches("^\\d{8}$");
 		
 		if ( isName == false ) {
-			result = Util.MapResultAlert("F-11", "성명 입력 오류", "성명에는 이름, 영어 외 문자가 들어갈 수 없습니다.", "error");
+			result = Util.MapResultAlert("F-10", "성명 입력 오류", "성명에는 이름, 영어 외 문자가 들어갈 수 없습니다.", "error");
 			return result;
 		} else if(isPhoneNumber == false) {
-			result = Util.MapResultAlert("F-12", "전화번호 입력 오류", "휴대전화 번호 양식을 지켜주세요(- 제외)", "error");
+			result = Util.MapResultAlert("F-11", "전화번호 입력 오류", "휴대전화 번호 양식을 지켜주세요(- 제외)", "error");
 			return result;
 		} else if (memberPw.trim().length() < 3) {
-			result = Util.MapResultAlert("F-14", "비밀번호 입력 오류", "비밀번호를 4글자 이상으로 입력해주세요.", "error");
+			result = Util.MapResultAlert("F-12", "비밀번호 입력 오류", "비밀번호를 4글자 이상으로 입력해주세요.", "error");
+			return result;
+		} else if (isBirth == false) {
+			result = Util.MapResultAlert("F-13", "생년월일 입력 오류", "생년월일의 양식이 일치하지 않습니다.  ex) 20200202", "error");
 			return result;
 		}
 		
@@ -154,7 +173,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void changePassword(Map<String, Object> param) {
+	public void doChangePassword(Map<String, Object> param) {
 		
 		String key = (String) param.get("key");
 		
@@ -184,10 +203,12 @@ public class MemberServiceImpl implements MemberService {
 		
 		Map<String, Object> result = new HashMap<>();
 		
-		if(memberName == null) {
-			result = Util.MapResultAlert("F-1", "아이디 미입력", "아이디를 입력해주세요.", "error");
+		logger.debug("param=" + param);
+		
+		if(memberName == null || "".equals(memberName)) {
+			result = Util.MapResultAlert("F-1", "성함 미입력", "성함을 입력해주세요.", "error");
 			return result;
-		} else if(memberPw == null) {
+		} else if(memberPw == null || "".equals(memberPw)) {
 			result = Util.MapResultAlert("F-2", "패스워드 미입력", "패스워드를 입력해주세요.", "error");
 			return result;
 		}
@@ -208,6 +229,44 @@ public class MemberServiceImpl implements MemberService {
 		
 		result = Util.MapResultAlert("S-1", "로그인", "로그인 되었습니다.", "success");
 		
+		return result;
+	}
+
+	@Override
+	public Map<String, Object> ChangePw(Map<String, Object> param) {
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		String birthReg = "^\\d{8}$";
+		String phoneNumber = "\\d{11}$";
+		
+		String memberName = (String) param.get("memberName");
+		String memberBirth = (String) param.get("memberBirth");
+		String memberPhNum = (String) param.get("memberPhNum");
+		String memberEmail = (String) param.get("memberEmail");
+		
+		if(memberName == null || memberName.length() < 1) {
+			result = Util.MapResultAlert("F-2", "성함 미입력", "성함을 입력해주세요.", "error");
+			return result;
+		} else if ( ! Pattern.matches(birthReg, memberBirth) ) {
+			result = Util.MapResultAlert("F-3", "생년월일 양식", "생년월일의 양식이 일치하지 않습니다.", "error");
+			return result;
+		} else if ( ! Pattern.matches(phoneNumber, memberPhNum) ) {
+			result = Util.MapResultAlert("F-4", "전화번호 양식", "전화번호 양식이 일치하지 않습니다.", "error");
+			return result;
+		} else if(memberEmail == null || memberEmail.length() < 1) {
+			result = Util.MapResultAlert("F-5", "이메일 미입력", "이메일을 입력해주세요.", "error");
+			return result;
+		}
+		
+		MemberVO member = memberMapper.getMemberByNameAndBirthAndPhoneNumberAndEmail(param);
+		
+		if ( member == null ) {
+			result = Util.MapResultAlert("F-1", "일치하는 정보 없음", "입력하신 정보와 일치하는 정보가 없습니다.", "error");
+			return result;
+		}
+		
+		result = Util.MapResultAlert("S-1", "인증 성공", "입력하신 이메일로 임시비밀번호가 전송 되었습니다.", "success");
 		return result;
 	}
 }

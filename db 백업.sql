@@ -3890,7 +3890,7 @@ CREATE TABLE IF NOT EXISTS `member` (
 DELETE FROM `member`;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
 INSERT INTO `member` (`id`, `regDate`, `updateDate`, `memberName`, `memberPw`, `memberBirth`, `memberAddress`, `memberGender`, `memberPhNum`, `memberLevel`, `mailAgree`, `pwStatus`) VALUES
-	(2, '2022-01-24 17:34:10', '2022-01-24 17:34:10', '방혜성', '$2a$10$z2IYtLb0NCjB5M32P5GSc.8njBQ384L1YxN/YSxrtslp.p0B9PvZe', '2021-12-15 00:00:00', '제주특별자치도제주시화북동', 'man', '01083700420', 1, 'Y', 'normal');
+	(2, '2022-01-24 17:34:10', '2022-01-24 17:34:10', '방혜성', '$2a$10$CU/mf5oozdFujuIvOhmpq.CsUVVxB42aWsDAeDQ5EHMfs1GKdMSm2', '2021-12-15 00:00:00', '제주특별자치도제주시화북동', 'man', '01083700420', 1, 'Y', 'change');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

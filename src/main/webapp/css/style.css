@@ -2114,6 +2114,33 @@ header{
 	}
 }
 /* 패스워드 찾기 화면 끝 */
+
+/* 본인 확인 팝업 시작 */
+.identPopupBox{
+	display : none;
+}
+.identPopupBox.active{
+	display: flex;
+    position: fixed;
+    z-index: 99;
+    width: 100%;
+    height: calc(100% + 60px);
+	background: rgba(0,0,0,0.5);
+    top: -60px;
+    justify-content: center;
+    align-items: center;
+}
+.identPopupBox div{
+	display: flex;
+    height: 40%;
+    width : 40%;
+    margin : auto;
+    justify-content: center;
+    align-items: center;
+    flex-direction : column;
+}
+/* 본인 확인 팝업 끝 */
+
 /* 푸터 시작 */
 .footer{
 	height : 90px;

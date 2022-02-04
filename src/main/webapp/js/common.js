@@ -163,5 +163,18 @@ function sweetAlert(title, text, icon, inputName){
 }
 
 function openIdentification(){
+	let identBox = document.querySelector('.identPopupBox');
 	
+	identBox.classList.add('active');
+	
+	let identBoxDiv = document.createElement('div');
+	let identHead = document.createElement('section');
+	let identBody = document.createElement('section');
+	identBox.appendChild(identBoxDiv);
+	identBoxDiv.appendChild(identHead);
+	identBoxDiv.appendChild(identBody);
+	identBoxDiv.firstChild.classList.add('identHead');
+	identBoxDiv.lastChild.classList.add('identBody');
+	identHead.innerHTML = '본인확인 화면';
+	identBody.innerHTML = '내용';
 }

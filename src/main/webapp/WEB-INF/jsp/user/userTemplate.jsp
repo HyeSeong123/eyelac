@@ -41,9 +41,8 @@
 </head>
 <body>
 	<tiles:insertAttribute name="userHeader" />
-	
+	<div class="identPopupBox"></div>
 	<section>
-		<div class="identPopupBox"></div>
 		<tiles:insertAttribute name="userContents" />
 	</section>
 	

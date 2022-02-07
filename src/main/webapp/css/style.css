@@ -668,66 +668,59 @@ header{
 .section3_logo{
 	width : 50%;
 	text-align: center;
-	padding-top : 20px;
 	position: relative;
-	top : 70px;
 	opacity : 0;
+	height : 100%;
+	top: 170px;
 }
 .section3_logo h1{
 	font-family: 'ChosunBg';
 	margin-bottom : 20px;
 }
-.price_infor{
-	font-family: 'ChosunBg';
+.price_logo{
+	margin-bottom : 40px;
+}
+.price_logo > h2 {
+	font-size : 50px;
+	font-family: 'LotteMartHappy';
+}
+.price_table {
 	width: 80%;
-    margin-right : auto;
-    margin-left : auto;
-    background-color: rgba( 255, 255, 255, 0.6 );
-    border-radius: 20px;
-    padding : 45px 0;
-    font-size : 18px;
-    border:10px solid white;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+    font-family: 'LotteMartHappy';
 }
-.price_infor > ul{
-	height: 90%;
-}
-.price_infor > ul > li{
-	margin-bottom : 20px;
+.price_table th {
 	border-bottom : 2px solid black;
 }
-.price_infor .pro_tit{
-	font-family: 'ChosunBg';
+.price_table tbody tr {
+	margin-bottom: 5px;
 }
-.price_infor .pro_pri{
-	font-size: 26px;
-	font-weight: bold;
+.price_table .table__service_title{
+	width: 50%;
+    font-size: 20px;
+    text-align: left;
 }
-.price_infor > ul > li:first-child > .pro_pri{
-	text-decoration : line-through;
-	color : #cfcfcf;
+.price_table .table__service_title span{
+	margin-left : 20px;	
 }
-.price_infor > ul > li> span {
-	width : calc(100% / 3);	
+.price_table .table__service_price{
+	width : 20%;
+	font-size: 18px;
 }
-.price_infor .pro_eve{
-	text-decoration : under-through;
-	color : #eb343a;
-	font-size : 25px;
-	font-weight: bold;
+.price_table .table__service_eventPrice{
+	width : 20%;
+	font-size: 18px;
 }
-.price_infor .button_box{
-	margin-top : 60px;
-	text_align : center;
-	font-family: 'ChosunBg';
-	font-size : 20px;
+.table__body__service_title{
+	text-align : left;
 }
-.prioce_infor .button_box a{
-	
+.table__body__service_title span{
+	margin-left : 38px;
 }
 @media (max-width : 1450px){
-	.price_infor .pro_eve_attr{
-		display : block;
-	}
+
 }
 
 @media (max-width : 1000px){
@@ -743,31 +736,24 @@ header{
 	.section3_logo > h1 { 
 		margin-left : 90px
 	}
-	.price_infor{
-		width: 100%;
-		background-color: rgba( 255, 255, 255, 0.8 );
-	}
 	.button_box > a{
 		display : block;
 	}
 	.section3_logo{
 		opacity: 0;
-		top : 70px;
+		top : 110px;
 	}
-	
+	.table_div {
+	    background-color: rgba(255,255,255,0.8);
+	    padding: 20px 0;
+	}
 }
 @media (max-width : 640px){
-	.price_infor .pro_tit {
-		font-size: 16px; 
+	.price_table{
+		width : 100%;
 	}
-	.price_infor .pro_pri {
-		font-size: 20px; 
-	}
-	.price_infor .pro_eve {
-		font-size: 22px; 
-	}
-	.pro_eve_attr{
-		display: none;
+	.price_logo > h2{
+		font-size : 35px;
 	}
 }
 @media (max-width : 560px){
@@ -776,17 +762,28 @@ header{
 		font-size : 30px;
 	}
 }
+@media (max-width : 414px){
+	.section3_logo > h1 {
+		margin-left : 10px;
+		font-size : 30px;
+	}
+	.table_div{
+		padding : 20px 0;
+	}
+	.section3_logo{
+		top : 150px;
+	}
+}
 @media (max-width : 410px){
 	.section3_logo > h1 {
 		margin-left : 10px;
 		font-size : 30px;
 	}
-	.price_infor{
-		padding : 0;
+	.table_div{
+		padding : 10px 0;
 	}
-	.price_infor .button_box{
-		margin-top : 20px;
-		padding-bottom : 10px;
+	.section3_logo{
+		top : 84px;
 	}
 }
 /* 메인3 끝 */
@@ -860,7 +857,7 @@ header{
 }
 @media (max-width : 768px){
 	.portfolio_tit > h1{
-		font-size: 50px;
+		font-size: 45px;
 	}
 	#gallery .insta-Bg_box img {
 		height : 360px;

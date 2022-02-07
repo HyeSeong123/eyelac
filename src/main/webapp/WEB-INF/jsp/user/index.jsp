@@ -68,44 +68,80 @@
 	<section class="main_wrapper_3" id="main_section3">
 		<section class="main_background flex flex-column flex-jc-c height-100p">
 			<div class="section3_logo ">
-				<h1>SERVICE</h1>
-				<div class="price_infor">
-					<ul>
-						<li>
-							<span class="pro_tit">눈썹문신</span>
-							<span class="pro_pri">150,000</span>
-							<span class="pro_eve">100,000 <span class="pro_eve_attr">(이벤트)</span></span>
-						</li>
-						<li>
-							<span class="pro_tit">헤어라인</span>
-							<span class="pro_pri">180,000</span>
-							<span class="pro_eve"></span>
-						</li>
-						<li>
-							<span class="pro_tit">미인점</span>
-							<span class="pro_pri">30,000</span>
-							<span class="pro_eve"></span>
-						</li>
-						<li>
-							<span class="pro_tit">속눈썹펌</span>
-							<span class="pro_pri">25,000</span>
-							<span class="pro_eve"></span>
-						</li>
-					</ul>
-					
-					<div class="button_box">
-						<a href="#" class="reser">예약하기 ></a>
+				<div class="table_div">
+					<div class="price_logo">
+						<h2>Eyelac Beauty Salon</h2>
 					</div>
 					
+					<table class="price_table">
+						<thead>
+							<tr>
+								<th class="table__service_title"><span>눈썹</span></th>
+								<th class="table__service_price">가격</th>
+								<th class="table__service_eventPrice">이벤트가</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr>
+								<td class="table__body__service_title"><span>눈썹 문신</span></td>
+								<td>150,000원</td>
+								<td>130,000원</td>
+							</tr>
+						</tbody>
+					</table>
+					
+					<table class="price_table">
+						<thead>
+							<tr>
+								<th class="table__service_title"><span>속눈썹</span></th>
+								<th class="table__service_price">가격</th>
+								<th class="table__service_eventPrice">이벤트가</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr>
+								<td class="table__body__service_title"><span>속눈썹 펌</span></td>
+								<td>35,000원</td>
+								<td>30,000원</td>
+							</tr>
+							
+							<tr>
+								<td class="table__body__service_title"><span>속눈썹 펌 & 영양제</span></td>
+								<td>60,000원</td>
+								<td>50,000원</td>
+							</tr>
+						</tbody>
+					</table>
+					
+					<table class="price_table">
+						<thead>
+							<tr>
+								<th class="table__service_title"><span>상품</span></th>
+								<th class="table__service_price">가격</th>
+								<th class="table__service_eventPrice">이벤트가</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr>
+								<td class="table__body__service_title"><span>속눈썹 영양제</span></td>
+								<td>20,000원</td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</section>
 	</section>
-		
+	
+	
 	<section class="main_wrapper_4" id="main_section4">
 		<div class="container-fluid">
 			<div class="portfolio_tit">
-				<h1 class="">G A L L A R Y</h1>
+				<h1 class="">P O R T F O L I O</h1>
 			</div>
 			<ul id="gallery" class="row"></ul>
 		</div>
@@ -162,9 +198,9 @@
 		
 	    var feed = new Instafeed({
 	      target:'gallery',
-	      template:'<li class=\"col-md-3 {{id}}\"><span onclick="test(\'{{id}}\')">{{caption}}</span><a class="insta-Bg_box" href="javascript:test(\'{{id}}\');"><img id="insta_img" title="{{caption}}" src="{{image}}" /></a></li>',
+	      template:'<li class=\"col-md-4 {{id}}\"><span onclick="test(\'{{id}}\')">{{caption}}</span><a class="insta-Bg_box" href="javascript:test(\'{{id}}\');"><img id="insta_img" title="{{caption}}" src="{{image}}" /></a></li>',
 	      accessToken: 'IGQVJYU1MtVFQxamZAlMGJtNWpQS2hwMFdGS3c0RjY0RVAzaXFLYTdtd0M1Rkl0TjZAWSnNQanF2aUJIZA1d1MDUxMzJwbFR2d3JRdTYxVXd3T0xGVjdidUFmNXhWYzNKOEUzaWIxV3U1V3JYNjh5cXVYcwZDZD',
-	      limit : 8
+	      limit : 6
 	    });
 	    feed.run();
 		
